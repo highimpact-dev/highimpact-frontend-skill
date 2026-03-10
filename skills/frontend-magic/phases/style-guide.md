@@ -60,7 +60,7 @@ Each iteration is just a find-and-replace on the template — no code to rewrite
 
 - **Simple components** (button, card, nav) that skipped the plan
 - **User said "just build it"** — respect their urgency
-- **Returning project with established memory** — if `.frontend-design-memory.md` has approved colors/fonts from a previous build, the user already knows what these look like
+- **Returning project with established memory** — if `.frontend-magic-memory.md` has approved colors/fonts from a previous build, the user already knows what these look like
 
 ### Style Guide Anti-Rationalization
 

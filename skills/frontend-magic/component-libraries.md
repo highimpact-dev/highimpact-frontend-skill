@@ -1,6 +1,6 @@
 # Component Library Detection & Integration
 
-Reference file for the frontend-design skill. Read this during the Discovery phase.
+Reference file for the frontend-magic skill. Read this during the Discovery phase.
 
 ---
 

@@ -1,0 +1,17 @@
+{
+  "skill_name": "frontend-magic",
+  "evals": [
+    {
+      "id": 0,
+      "prompt": "Build a landing page for an artisan coffee roaster called Ember & Oak. They're based in Portland, source single-origin beans, and do small-batch roasting. Target audience is coffee enthusiasts who care about craft and origin stories.",
+      "expected_output": "A landing page with distinctive typography, warm atmospheric design, specific copy about the brand, and a clear visual identity — not generic cards and Inter font.",
+      "files": []
+    },
+    {
+      "id": 1,
+      "prompt": "Build a landing page for a cybersecurity startup called Sentinel Shield. They do threat detection and incident response for mid-market companies. Target audience is CTOs and security teams evaluating vendors.",
+      "expected_output": "A landing page with strong visual identity, purposeful dark/tech aesthetic (if chosen), specific security-focused copy, and design personality — not generic SaaS template.",
+      "files": []
+    }
+  ]
+}

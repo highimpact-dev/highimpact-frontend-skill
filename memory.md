@@ -1,6 +1,6 @@
 # Frontend Design Memory — Template
 
-This is the template for per-project memory files. The orchestrator creates `.frontend-design-memory.md` in the project's working directory on first use.
+This is the template for per-project memory files. The orchestrator creates `.frontend-magic-memory.md` in the project's working directory on first use.
 
 **The skill does NOT use this file directly.** It reads/writes the project-local copy.
 
@@ -8,7 +8,7 @@ This is the template for per-project memory files. The orchestrator creates `.fr
 
 ## How It Works
 
-1. **First build in a project**: Orchestrator creates `.frontend-design-memory.md` in the project root from this template
+1. **First build in a project**: Orchestrator creates `.frontend-magic-memory.md` in the project root from this template
 2. **Every build**: Orchestrator reads the project's memory file during Discovery
 3. **After shipping/revisions**: Orchestrator updates the project's memory file with what it learned
 4. **Users can**: edit it directly, gitignore it, or delete it to reset
@@ -18,7 +18,7 @@ This is the template for per-project memory files. The orchestrator creates `.fr
 ```markdown
 # Frontend Design Memory
 
-Persistent memory for this project's design preferences. Read by the frontend-design skill during Discovery, updated after shipping.
+Persistent memory for this project's design preferences. Read by the frontend-magic skill during Discovery, updated after shipping.
 
 **To reset**: delete this file. A new one will be created on the next build.
 

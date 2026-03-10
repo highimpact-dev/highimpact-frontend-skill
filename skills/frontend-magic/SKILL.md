@@ -1,5 +1,5 @@
 ---
-name: frontend-design
+name: frontend-magic
 description: Create distinctive, production-grade frontend interfaces with high design quality. Use this skill when the user asks to build web components, pages, or applications. Generates creative, polished code that avoids generic AI aesthetics.
 license: Complete terms in LICENSE.txt
 ---
@@ -37,7 +37,7 @@ This skill guides creation of distinctive, production-grade frontend interfaces 
 - `learnings.md` — Cross-project patterns and auto-generated anti-patterns. **Read during Design Plan** to avoid known pitfalls.
 
 **Do not read:**
-- `memory.md` — Template only. Read/write `.frontend-design-memory.md` in the project's working directory instead.
+- `memory.md` — Template only. Read/write `.frontend-magic-memory.md` in the project's working directory instead.
 
 ---
 
@@ -81,7 +81,7 @@ This skill guides creation of distinctive, production-grade frontend interfaces 
 This skill evolves across projects. Two mechanisms:
 
 ### Per-Project Memory (project-specific)
-`.frontend-design-memory.md` in the project's working directory. Captures brand, preferences, revision patterns for THIS project. Read during Discovery, updated after shipping.
+`.frontend-magic-memory.md` in the project's working directory. Captures brand, preferences, revision patterns for THIS project. Read during Discovery, updated after shipping.
 
 ### Cross-Project Learnings (global)
 `learnings.md` in this skill directory. Captures patterns that apply across ALL projects — common revision triggers, generated anti-patterns, design patterns that consistently work. Read during Design Plan, updated after shipping via the Learning Extraction step in `phases/ship.md`.

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Font selector for the frontend-design skill.
+ * Font selector for the frontend-magic skill.
  *
  * Takes a mood profile (derived from the conceptual anchor) and returns
  * font recommendations from Google Fonts' tagged dataset.

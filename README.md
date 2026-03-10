@@ -122,7 +122,7 @@ First delivery is rarely final. After seeing the output, you iterate: adjust the
 Every revision agent gets the full ruleset — the same design guidelines, copy rules, and anti-rationalization tables that drove the first build. Quality doesn't degrade on round 3 the way it does when you're just chatting with a bare model.
 
 ### 9. Project Memory
-The skill creates a `.frontend-design-memory.md` in your project directory after the first build. It captures your preferences, revision patterns, approved directions, and brand notes — so the next build in that project starts from what it already learned about your taste, not from zero.
+The skill creates a `.frontend-magic-memory.md` in your project directory after the first build. It captures your preferences, revision patterns, approved directions, and brand notes — so the next build in that project starts from what it already learned about your taste, not from zero.
 
 ### 10. Skill Evolution
 

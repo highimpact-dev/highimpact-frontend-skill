@@ -31,7 +31,7 @@ Discovery has two parts: **Project Detection** (automatic, silent) and **Gap-Fil
 
 ### Step 0: Memory Check (always run first, silent)
 
-Check for `.frontend-design-memory.md` in the project's working directory.
+Check for `.frontend-magic-memory.md` in the project's working directory.
 
 **If it exists**: Read it. This project has been built with the skill before. Use stored preferences to inform your plan — don't re-learn what you already know.
 - If memory has brand/identity notes → you already know the audience and voice

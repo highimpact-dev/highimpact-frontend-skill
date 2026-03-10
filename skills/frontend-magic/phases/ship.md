@@ -54,7 +54,7 @@ prompt: |
 
 ## Memory Update (after shipping or significant revisions)
 
-After the build ships (or after 2+ revision rounds), update `.frontend-design-memory.md` in the project directory. If the file doesn't exist yet, create it from the template in `memory.md`.
+After the build ships (or after 2+ revision rounds), update `.frontend-magic-memory.md` in the project directory. If the file doesn't exist yet, create it from the template in `memory.md`.
 
 This is how the skill gets better for this project over time. Each project maintains its own memory — a fintech dashboard's preferences don't bleed into a band's landing page.
 

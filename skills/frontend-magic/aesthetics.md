@@ -1,6 +1,6 @@
 # Frontend Aesthetics Guidelines
 
-Reference file for the frontend-design skill. Read this during Design Plan and Staged Build phases.
+Reference file for the frontend-magic skill. Read this during Design Plan and Staged Build phases.
 
 ---
 
