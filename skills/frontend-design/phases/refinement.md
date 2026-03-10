@@ -109,7 +109,7 @@ prompt: |
 
 ```
 Tool: Agent
-subagent_type: "frontend-copywriter" (falls back to Sonnet implementer)
+subagent_type: "implementer"
 description: "Revise copy — [voice change]"
 prompt: |
   Read ~/.claude/skills/frontend-design/agents/frontend-copywriter.md for your full instructions.

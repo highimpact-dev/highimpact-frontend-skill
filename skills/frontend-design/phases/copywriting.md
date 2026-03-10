@@ -1,7 +1,7 @@
 # Phase 3: Copywriting
 
 **When to read**: After Style Guide is approved (or skipped), before Build.
-**Runs in subagent**: `frontend-copywriter` (Sonnet)
+**Runs in subagent**: `implementer` (Sonnet) with copywriter instructions
 
 ---
 
@@ -19,7 +19,7 @@
 
 ```
 Tool: Agent
-subagent_type: "frontend-copywriter" (falls back to Sonnet implementer — read the agent file)
+subagent_type: "implementer"
 description: "Write copy for [page/component name]"
 prompt: |
   Read ~/.claude/skills/frontend-design/agents/frontend-copywriter.md for your full instructions.

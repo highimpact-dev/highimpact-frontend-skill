@@ -56,7 +56,7 @@ This skill guides creation of distinctive, production-grade frontend interfaces 
 
 | Phase | Agent | Model | Why |
 |-------|-------|-------|-----|
-| 3: Copywriting | `frontend-copywriter` | Sonnet | Voice-sensitive content generation — needs nuance |
+| 3: Copywriting | `implementer` | Sonnet | Voice-sensitive content generation — needs nuance |
 | 4: Staged Build | `frontend-builder` | Sonnet | Token-heavy code generation — plan provides all creative direction |
 | 5: Live Testing | `frontend-tester` | Sonnet | Browser automation, screenshots, checks — coordination work |
 | 6: Design Review | `frontend-reviewer` | Haiku | Structured comparison against plan — checklist work |
