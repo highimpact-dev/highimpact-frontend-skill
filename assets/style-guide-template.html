@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Style Guide — {{PROJECT_NAME}}</title>
+{{FONT_IMPORTS}}
+<style>
+  :root {
+    --font-display: {{FONT_DISPLAY}};
+    --font-body: {{FONT_BODY}};
+    --color-bg: {{COLOR_BG}};
+    --color-text: {{COLOR_TEXT}};
+    --color-primary: {{COLOR_PRIMARY}};
+    --color-accent: {{COLOR_ACCENT}};
+    --color-surface: {{COLOR_SURFACE}};
+    --color-muted: {{COLOR_MUTED}};
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--font-body), sans-serif;
+    background: var(--color-bg);
+    color: var(--color-text);
+    line-height: 1.6;
+    padding: 0;
+  }
+
+  /* --- Header --- */
+  .sg-header {
+    padding: 2.5rem 3rem;
+    border-bottom: 1px solid color-mix(in srgb, var(--color-text) 12%, transparent);
+  }
+  .sg-header h1 {
+    font-family: var(--font-display), serif;
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+  .sg-header p {
+    font-size: 0.875rem;
+    color: var(--color-muted);
+    margin-top: 0.25rem;
+  }
+
+  /* --- Layout --- */
+  .sg-section {
+    padding: 3rem;
+    border-bottom: 1px solid color-mix(in srgb, var(--color-text) 8%, transparent);
+  }
+  .sg-section-label {
+    font-family: var(--font-body), sans-serif;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    margin-bottom: 2rem;
+  }
+
+  /* --- Typography --- */
+  .sg-type-scale {
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+  }
+  .sg-type-row {
+    display: grid;
+    grid-template-columns: 7rem 1fr;
+    align-items: baseline;
+    gap: 2rem;
+  }
+  .sg-type-meta {
+    font-size: 0.75rem;
+    color: var(--color-muted);
+    line-height: 1.4;
+    padding-top: 0.25em;
+  }
+  .sg-type-meta span {
+    display: block;
+  }
+  .sg-h1 {
+    font-family: var(--font-display), serif;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+  .sg-h2 {
+    font-family: var(--font-display), serif;
+    font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+  }
+  .sg-h3 {
+    font-family: var(--font-display), serif;
+    font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+    font-weight: 600;
+    line-height: 1.2;
+  }
+  .sg-h4 {
+    font-family: var(--font-display), serif;
+    font-size: 1.125rem;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+  .sg-body-text {
+    font-family: var(--font-body), sans-serif;
+    font-size: 1rem;
+    line-height: 1.65;
+    max-width: 42em;
+  }
+  .sg-small-text {
+    font-family: var(--font-body), sans-serif;
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    color: var(--color-muted);
+  }
+
+  /* --- Font Pairing Preview --- */
+  .sg-pairing-preview {
+    margin-top: 2.5rem;
+    padding: 2.5rem;
+    background: var(--color-surface);
+    border-radius: 0.75rem;
+    max-width: 36rem;
+  }
+  .sg-pairing-preview h3 {
+    font-family: var(--font-display), serif;
+    font-size: 1.75rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 0.75rem;
+  }
+  .sg-pairing-preview p {
+    font-family: var(--font-body), sans-serif;
+    font-size: 1rem;
+    line-height: 1.65;
+    color: var(--color-muted);
+  }
+
+  /* --- Color Palette --- */
+  .sg-palette {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+    gap: 1rem;
+  }
+  .sg-swatch {
+    border-radius: 0.75rem;
+    overflow: hidden;
+    border: 1px solid color-mix(in srgb, var(--color-text) 8%, transparent);
+  }
+  .sg-swatch-color {
+    height: 6rem;
+    position: relative;
+  }
+  .sg-swatch-info {
+    padding: 0.75rem 1rem;
+    background: var(--color-surface);
+  }
+  .sg-swatch-name {
+    font-size: 0.8125rem;
+    font-weight: 600;
+  }
+  .sg-swatch-value {
+    font-size: 0.75rem;
+    color: var(--color-muted);
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    margin-top: 0.125rem;
+  }
+  .sg-swatch-contrast {
+    font-size: 0.6875rem;
+    color: var(--color-muted);
+    margin-top: 0.25rem;
+  }
+  .sg-swatch-contrast .pass { color: #16a34a; font-weight: 600; }
+  .sg-swatch-contrast .fail { color: #dc2626; font-weight: 600; }
+
+  /* --- Buttons --- */
+  .sg-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+  }
+  .sg-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem 1.75rem;
+    font-family: var(--font-body), sans-serif;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    border-radius: 0.5rem;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+  }
+  .sg-btn-primary {
+    background: var(--color-primary);
+    color: var(--color-bg);
+  }
+  .sg-btn-primary:hover {
+    filter: brightness(1.1);
+    transform: translateY(-1px);
+  }
+  .sg-btn-secondary {
+    background: transparent;
+    color: var(--color-primary);
+    border-color: var(--color-primary);
+  }
+  .sg-btn-secondary:hover {
+    background: color-mix(in srgb, var(--color-primary) 10%, transparent);
+  }
+  .sg-btn-accent {
+    background: var(--color-accent);
+    color: var(--color-bg);
+  }
+  .sg-btn-accent:hover {
+    filter: brightness(1.1);
+    transform: translateY(-1px);
+  }
+  .sg-btn-ghost {
+    background: transparent;
+    color: var(--color-text);
+    border-color: color-mix(in srgb, var(--color-text) 20%, transparent);
+  }
+  .sg-btn-ghost:hover {
+    border-color: var(--color-text);
+  }
+  .sg-btn-label {
+    font-size: 0.75rem;
+    color: var(--color-muted);
+    text-align: center;
+    margin-top: 0.5rem;
+  }
+  .sg-btn-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* --- Atmosphere Preview --- */
+  .sg-atmosphere {
+    border-radius: 0.75rem;
+    overflow: hidden;
+    position: relative;
+    min-height: 16rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    {{ATMOSPHERE_CSS}}
+  }
+  .sg-atmosphere-content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 3rem;
+  }
+  .sg-atmosphere-content h2 {
+    font-family: var(--font-display), serif;
+    font-size: clamp(1.5rem, 3vw, 2.25rem);
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    color: {{ATMOSPHERE_TEXT_COLOR}};
+  }
+  .sg-atmosphere-content p {
+    font-family: var(--font-body), sans-serif;
+    font-size: 1rem;
+    color: {{ATMOSPHERE_TEXT_COLOR}};
+    opacity: 0.8;
+    max-width: 28em;
+    margin: 0 auto;
+  }
+  .sg-atmosphere::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    {{ATMOSPHERE_OVERLAY_CSS}}
+    pointer-events: none;
+  }
+
+  /* --- Sample Card --- */
+  .sg-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+    gap: 1.5rem;
+  }
+  .sg-card {
+    background: var(--color-surface);
+    border-radius: 0.75rem;
+    overflow: hidden;
+    border: 1px solid color-mix(in srgb, var(--color-text) 8%, transparent);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .sg-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px color-mix(in srgb, var(--color-text) 10%, transparent);
+  }
+  .sg-card-img {
+    height: 8rem;
+    background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+  }
+  .sg-card-body {
+    padding: 1.25rem;
+  }
+  .sg-card-body h4 {
+    font-family: var(--font-display), serif;
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+  .sg-card-body p {
+    font-size: 0.875rem;
+    line-height: 1.55;
+    color: var(--color-muted);
+  }
+  .sg-card-body a {
+    display: inline-block;
+    margin-top: 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-accent);
+    text-decoration: none;
+  }
+  .sg-card-body a:hover {
+    text-decoration: underline;
+  }
+
+  /* --- Conceptual Anchor --- */
+  .sg-anchor-block {
+    padding: 2rem 2.5rem;
+    background: var(--color-surface);
+    border-radius: 0.75rem;
+    border-left: 4px solid var(--color-accent);
+    max-width: 40rem;
+  }
+  .sg-anchor-block blockquote {
+    font-family: var(--font-display), serif;
+    font-size: 1.25rem;
+    font-style: italic;
+    line-height: 1.5;
+    margin-bottom: 0.75rem;
+  }
+  .sg-anchor-block .sg-anchor-desc {
+    font-size: 0.875rem;
+    color: var(--color-muted);
+    line-height: 1.6;
+  }
+
+  /* --- Responsive --- */
+  @media (max-width: 768px) {
+    .sg-section { padding: 2rem 1.5rem; }
+    .sg-header { padding: 2rem 1.5rem; }
+    .sg-type-row {
+      grid-template-columns: 1fr;
+      gap: 0.25rem;
+    }
+    .sg-type-meta { padding-bottom: 0.25rem; }
+    .sg-palette { grid-template-columns: repeat(2, 1fr); }
+    .sg-buttons { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="sg-header">
+  <h1>Style Guide — {{PROJECT_NAME}}</h1>
+  <p>Visual foundation for review. Approve or request changes before the full build begins.</p>
+</div>
+
+<!-- Conceptual Anchor -->
+<div class="sg-section">
+  <div class="sg-section-label">Conceptual Anchor</div>
+  <div class="sg-anchor-block">
+    <blockquote>{{ANCHOR_METAPHOR}}</blockquote>
+    <div class="sg-anchor-desc">{{ANCHOR_DESCRIPTION}}</div>
+  </div>
+</div>
+
+<!-- Typography -->
+<div class="sg-section">
+  <div class="sg-section-label">Typography</div>
+  <div class="sg-type-scale">
+    <div class="sg-type-row">
+      <div class="sg-type-meta">
+        <span>H1 — Display</span>
+        <span>{{FONT_DISPLAY_NAME}}</span>
+      </div>
+      <div class="sg-h1">{{SAMPLE_HEADLINE}}</div>
+    </div>
+    <div class="sg-type-row">
+      <div class="sg-type-meta">
+        <span>H2 — Display</span>
+        <span>{{FONT_DISPLAY_NAME}}</span>
+      </div>
+      <div class="sg-h2">A secondary headline for sections</div>
+    </div>
+    <div class="sg-type-row">
+      <div class="sg-type-meta">
+        <span>H3 — Display</span>
+        <span>{{FONT_DISPLAY_NAME}}</span>
+      </div>
+      <div class="sg-h3">Subsection headings and card titles</div>
+    </div>
+    <div class="sg-type-row">
+      <div class="sg-type-meta">
+        <span>H4 — Display</span>
+        <span>{{FONT_DISPLAY_NAME}}</span>
+      </div>
+      <div class="sg-h4">Smaller headings, labels, and emphasis</div>
+    </div>
+    <div class="sg-type-row">
+      <div class="sg-type-meta">
+        <span>Body</span>
+        <span>{{FONT_BODY_NAME}}</span>
+      </div>
+      <div class="sg-body-text">Body text for paragraphs and descriptions. This is what most of the page reads in — it needs to be comfortable at length. Check that the weight feels right, the letter-spacing is natural, and it pairs well with the display font above.</div>
+    </div>
+    <div class="sg-type-row">
+      <div class="sg-type-meta">
+        <span>Small</span>
+        <span>{{FONT_BODY_NAME}}</span>
+      </div>
+      <div class="sg-small-text">Captions, metadata, fine print, and supporting details. Still legible at this size.</div>
+    </div>
+  </div>
+
+  <!-- Font Pairing Preview -->
+  <div class="sg-pairing-preview">
+    <h3>{{PAIRING_PREVIEW_HEADLINE}}</h3>
+    <p>{{PAIRING_PREVIEW_BODY}}</p>
+  </div>
+</div>
+
+<!-- Color Palette -->
+<div class="sg-section">
+  <div class="sg-section-label">Color Palette</div>
+  <div class="sg-palette">
+    <div class="sg-swatch">
+      <div class="sg-swatch-color" style="background: var(--color-bg);"></div>
+      <div class="sg-swatch-info">
+        <div class="sg-swatch-name">Background</div>
+        <div class="sg-swatch-value">{{COLOR_BG}}</div>
+      </div>
+    </div>
+    <div class="sg-swatch">
+      <div class="sg-swatch-color" style="background: var(--color-text);"></div>
+      <div class="sg-swatch-info">
+        <div class="sg-swatch-name">Text</div>
+        <div class="sg-swatch-value">{{COLOR_TEXT}}</div>
+        <div class="sg-swatch-contrast">vs background: <span id="contrast-text"></span></div>
+      </div>
+    </div>
+    <div class="sg-swatch">
+      <div class="sg-swatch-color" style="background: var(--color-primary);"></div>
+      <div class="sg-swatch-info">
+        <div class="sg-swatch-name">Primary</div>
+        <div class="sg-swatch-value">{{COLOR_PRIMARY}}</div>
+        <div class="sg-swatch-contrast">vs background: <span id="contrast-primary"></span></div>
+      </div>
+    </div>
+    <div class="sg-swatch">
+      <div class="sg-swatch-color" style="background: var(--color-accent);"></div>
+      <div class="sg-swatch-info">
+        <div class="sg-swatch-name">Accent</div>
+        <div class="sg-swatch-value">{{COLOR_ACCENT}}</div>
+        <div class="sg-swatch-contrast">vs background: <span id="contrast-accent"></span></div>
+      </div>
+    </div>
+    <div class="sg-swatch">
+      <div class="sg-swatch-color" style="background: var(--color-surface);"></div>
+      <div class="sg-swatch-info">
+        <div class="sg-swatch-name">Surface</div>
+        <div class="sg-swatch-value">{{COLOR_SURFACE}}</div>
+      </div>
+    </div>
+    <div class="sg-swatch">
+      <div class="sg-swatch-color" style="background: var(--color-muted);"></div>
+      <div class="sg-swatch-info">
+        <div class="sg-swatch-name">Muted</div>
+        <div class="sg-swatch-value">{{COLOR_MUTED}}</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Buttons -->
+<div class="sg-section">
+  <div class="sg-section-label">Interactive Elements</div>
+  <div class="sg-buttons">
+    <div class="sg-btn-group">
+      <button class="sg-btn sg-btn-primary">Primary Action</button>
+      <div class="sg-btn-label">Primary</div>
+    </div>
+    <div class="sg-btn-group">
+      <button class="sg-btn sg-btn-secondary">Secondary Action</button>
+      <div class="sg-btn-label">Secondary</div>
+    </div>
+    <div class="sg-btn-group">
+      <button class="sg-btn sg-btn-accent">Accent Action</button>
+      <div class="sg-btn-label">Accent</div>
+    </div>
+    <div class="sg-btn-group">
+      <button class="sg-btn sg-btn-ghost">Ghost Action</button>
+      <div class="sg-btn-label">Ghost</div>
+    </div>
+  </div>
+</div>
+
+<!-- Atmosphere Preview -->
+<div class="sg-section">
+  <div class="sg-section-label">Atmosphere Preview</div>
+  <div class="sg-atmosphere">
+    <div class="sg-atmosphere-content">
+      <h2>{{ATMOSPHERE_HEADLINE}}</h2>
+      <p>{{ATMOSPHERE_DESCRIPTION}}</p>
+    </div>
+  </div>
+</div>
+
+<!-- Sample Cards -->
+<div class="sg-section">
+  <div class="sg-section-label">Component Preview</div>
+  <div class="sg-cards">
+    <div class="sg-card">
+      <div class="sg-card-img"></div>
+      <div class="sg-card-body">
+        <h4>Card Title Example</h4>
+        <p>A preview of how cards feel with this palette and type pairing. Check the weight of the heading vs body.</p>
+        <a href="#">Learn more &rarr;</a>
+      </div>
+    </div>
+    <div class="sg-card">
+      <div class="sg-card-img" style="background: linear-gradient(135deg, var(--color-accent), var(--color-primary));"></div>
+      <div class="sg-card-body">
+        <h4>Second Card Example</h4>
+        <p>Same structure, reversed gradient. Does the accent color carry enough contrast against the surface?</p>
+        <a href="#">View details &rarr;</a>
+      </div>
+    </div>
+    <div class="sg-card">
+      <div class="sg-card-img" style="background: var(--color-primary);"></div>
+      <div class="sg-card-body">
+        <h4>Third Card Example</h4>
+        <p>Solid primary fill. Check that the font pairing still reads well at card scale with muted body text.</p>
+        <a href="#">Explore &rarr;</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Contrast Calculator -->
+<script>
+function hexToRgb(hex) {
+  hex = hex.replace('#', '');
+  if (hex.length === 3) hex = hex.split('').map(c => c + c).join('');
+  const n = parseInt(hex, 16);
+  return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+}
+
+function luminance(r, g, b) {
+  const [rs, gs, bs] = [r, g, b].map(c => {
+    c = c / 255;
+    return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+  });
+  return 0.2126 * rs + 0.7152 * gs + 0.0722 * bs;
+}
+
+function contrastRatio(hex1, hex2) {
+  const [r1, g1, b1] = hexToRgb(hex1);
+  const [r2, g2, b2] = hexToRgb(hex2);
+  const l1 = luminance(r1, g1, b1);
+  const l2 = luminance(r2, g2, b2);
+  const lighter = Math.max(l1, l2);
+  const darker = Math.min(l1, l2);
+  return ((lighter + 0.05) / (darker + 0.05)).toFixed(1);
+}
+
+function gradeContrast(el, fg, bg) {
+  if (!el) return;
+  try {
+    const ratio = contrastRatio(fg, bg);
+    const grade = ratio >= 7 ? 'AAA' : ratio >= 4.5 ? 'AA' : ratio >= 3 ? 'AA Large' : 'Fail';
+    const cls = ratio >= 3 ? 'pass' : 'fail';
+    el.innerHTML = `<span class="${cls}">${ratio}:1 (${grade})</span>`;
+  } catch (e) {
+    el.textContent = '—';
+  }
+}
+
+const bg = '{{COLOR_BG}}';
+gradeContrast(document.getElementById('contrast-text'), '{{COLOR_TEXT}}', bg);
+gradeContrast(document.getElementById('contrast-primary'), '{{COLOR_PRIMARY}}', bg);
+gradeContrast(document.getElementById('contrast-accent'), '{{COLOR_ACCENT}}', bg);
+</script>
+
+</body>
+</html>
