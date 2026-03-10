@@ -14,7 +14,10 @@
       "author": {
         "name": "highimpact-dev"
       },
-      "source": ".",
+      "source": {
+        "source": "github",
+        "repo": "highimpact-dev/highimpact-frontend-skill"
+      },
       "category": "design",
       "homepage": "https://highimpact-dev.github.io/highimpact-frontend-skill/"
     }
