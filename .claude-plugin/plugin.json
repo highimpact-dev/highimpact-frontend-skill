@@ -6,7 +6,5 @@
     "name": "highimpact-dev"
   },
   "repository": "https://github.com/highimpact-dev/highimpact-frontend-skill",
-  "keywords": ["frontend", "design", "ui", "web", "fonts", "css", "html"],
-  "skills": "./skills",
-  "agents": "./agents"
+  "keywords": ["frontend", "design", "ui", "web", "fonts", "css", "html"]
 }
