@@ -1,0 +1,1266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sentinel Shield — Threat Detection & Incident Response</title>
+  <meta name="description" content="Sentinel Shield provides enterprise-grade threat detection and incident response for mid-market companies. 24/7 monitoring, rapid containment, zero guesswork.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700;800&family=Ubuntu+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       CSS VARIABLES
+       ============================================ */
+    :root {
+      --navy-deep: #0A1628;
+      --navy-mid: #0F1D32;
+      --slate: #1E293B;
+      --slate-light: #334155;
+      --cyan: #00D4FF;
+      --cyan-dim: rgba(0, 212, 255, 0.15);
+      --cyan-glow: rgba(0, 212, 255, 0.3);
+      --amber: #FF6B35;
+      --amber-dim: rgba(255, 107, 53, 0.15);
+      --text-primary: #F0F4F8;
+      --text-secondary: #94A3B8;
+      --text-muted: #64748B;
+      --font-display: 'Exo 2', system-ui, sans-serif;
+      --font-body: 'Ubuntu Sans', system-ui, sans-serif;
+      --max-width: 1200px;
+      --section-pad: clamp(4rem, 8vw, 7rem);
+      --grid-color: rgba(0, 212, 255, 0.04);
+    }
+
+    /* ============================================
+       RESET & BASE
+       ============================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-body);
+      background: var(--navy-deep);
+      color: var(--text-primary);
+      line-height: 1.65;
+      font-size: 16px;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+    button { font-family: inherit; cursor: pointer; border: none; }
+
+    /* ============================================
+       GRID BACKGROUND (surveillance grid)
+       ============================================ */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(var(--grid-color) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ============================================
+       UTILITY
+       ============================================ */
+    .container {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      position: relative;
+      z-index: 1;
+    }
+    .section-label {
+      font-family: var(--font-display);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--cyan);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .section-label::before {
+      content: '';
+      width: 24px;
+      height: 1px;
+      background: var(--cyan);
+    }
+    .section-title {
+      font-family: var(--font-display);
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+    }
+    .section-title--lg { font-size: clamp(2rem, 4vw, 3rem); }
+    .section-title--xl { font-size: clamp(2.5rem, 5.5vw, 4rem); }
+
+    /* ============================================
+       SCROLL ANIMATIONS
+       ============================================ */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+    .reveal-delay-5 { transition-delay: 0.5s; }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 1rem 0;
+      background: rgba(10, 22, 40, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(0, 212, 255, 0.08);
+      transition: background 0.3s;
+    }
+    .nav__inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav__logo {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      color: var(--text-primary);
+    }
+    .nav__logo-icon {
+      width: 32px;
+      height: 32px;
+      position: relative;
+    }
+    .nav__logo-icon svg {
+      width: 100%;
+      height: 100%;
+    }
+    .nav__links {
+      display: none;
+      list-style: none;
+      gap: 2rem;
+      align-items: center;
+    }
+    .nav__links a {
+      font-family: var(--font-display);
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      transition: color 0.2s;
+      letter-spacing: 0.02em;
+    }
+    .nav__links a:hover { color: var(--cyan); }
+    .nav__cta {
+      display: none;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 0.875rem;
+      padding: 0.6rem 1.4rem;
+      background: transparent;
+      border: 1.5px solid var(--cyan);
+      color: var(--cyan);
+      border-radius: 6px;
+      transition: all 0.25s;
+      letter-spacing: 0.02em;
+    }
+    .nav__cta:hover {
+      background: var(--cyan);
+      color: var(--navy-deep);
+      box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+    }
+    .nav__hamburger {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      padding: 4px;
+    }
+    .nav__hamburger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--text-secondary);
+      border-radius: 2px;
+      transition: all 0.3s;
+    }
+
+    /* Mobile nav overlay */
+    .mobile-nav {
+      position: fixed;
+      inset: 0;
+      background: rgba(10, 22, 40, 0.97);
+      backdrop-filter: blur(20px);
+      z-index: 99;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 2rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+    .mobile-nav.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+    .mobile-nav a {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      transition: color 0.2s;
+    }
+    .mobile-nav a:hover { color: var(--cyan); }
+
+    @media (min-width: 768px) {
+      .nav__links { display: flex; }
+      .nav__cta { display: inline-flex; }
+      .nav__hamburger { display: none; }
+    }
+
+    /* ============================================
+       HERO
+       ============================================ */
+    .hero {
+      padding: calc(var(--section-pad) + 4rem) 0 var(--section-pad);
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+    }
+    .hero__bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+    /* Radial radar sweep */
+    .hero__bg::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      right: -20%;
+      width: 900px;
+      height: 900px;
+      transform: translateY(-50%);
+      background: radial-gradient(circle, rgba(0, 212, 255, 0.08) 0%, transparent 70%);
+      border-radius: 50%;
+      animation: radarPulse 4s ease-in-out infinite;
+    }
+    .hero__bg::after {
+      content: '';
+      position: absolute;
+      bottom: -20%;
+      left: -10%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(255, 107, 53, 0.05) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+    @keyframes radarPulse {
+      0%, 100% { opacity: 0.5; transform: translateY(-50%) scale(0.95); }
+      50% { opacity: 1; transform: translateY(-50%) scale(1.05); }
+    }
+
+    .hero__content {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 3rem;
+      align-items: center;
+    }
+    .hero__text { max-width: 640px; }
+    .hero__badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-display);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--amber);
+      background: var(--amber-dim);
+      padding: 0.4rem 1rem;
+      border-radius: 100px;
+      margin-bottom: 1.5rem;
+      border: 1px solid rgba(255, 107, 53, 0.2);
+    }
+    .hero__badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--amber);
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    .hero__headline {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: clamp(2.5rem, 6vw, 4.25rem);
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+      margin-bottom: 1.5rem;
+    }
+    .hero__headline em {
+      font-style: normal;
+      color: var(--cyan);
+      position: relative;
+    }
+    .hero__sub {
+      font-size: 1.125rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: 2.5rem;
+      max-width: 520px;
+    }
+    .hero__actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: center;
+    }
+    .btn-primary {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1rem;
+      padding: 0.9rem 2rem;
+      background: var(--cyan);
+      color: var(--navy-deep);
+      border-radius: 8px;
+      transition: all 0.25s;
+      letter-spacing: 0.01em;
+    }
+    .btn-primary:hover {
+      background: #33DDFF;
+      box-shadow: 0 0 30px rgba(0, 212, 255, 0.35);
+      transform: translateY(-1px);
+    }
+    .btn-secondary {
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 1rem;
+      padding: 0.9rem 2rem;
+      background: transparent;
+      color: var(--text-secondary);
+      border: 1.5px solid var(--slate-light);
+      border-radius: 8px;
+      transition: all 0.25s;
+    }
+    .btn-secondary:hover {
+      border-color: var(--cyan);
+      color: var(--cyan);
+    }
+
+    /* Shield graphic */
+    .hero__visual {
+      display: none;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+    .shield-container {
+      width: 340px;
+      height: 380px;
+      position: relative;
+    }
+    .shield-svg {
+      width: 100%;
+      height: 100%;
+      filter: drop-shadow(0 0 40px rgba(0, 212, 255, 0.2));
+    }
+    /* Scanning line */
+    .scan-line {
+      position: absolute;
+      top: 0;
+      left: 10%;
+      right: 10%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+      opacity: 0.6;
+      animation: scan 3s ease-in-out infinite;
+    }
+    @keyframes scan {
+      0% { top: 10%; opacity: 0; }
+      10% { opacity: 0.6; }
+      90% { opacity: 0.6; }
+      100% { top: 90%; opacity: 0; }
+    }
+    /* Orbiting dots */
+    .orbit-ring {
+      position: absolute;
+      inset: -30px;
+      border: 1px solid rgba(0, 212, 255, 0.1);
+      border-radius: 50%;
+      animation: spinSlow 20s linear infinite;
+    }
+    .orbit-dot {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--cyan);
+      box-shadow: 0 0 10px var(--cyan);
+      top: -4px;
+      left: 50%;
+    }
+    .orbit-ring:nth-child(2) {
+      inset: -60px;
+      animation-duration: 30s;
+      animation-direction: reverse;
+      border-color: rgba(0, 212, 255, 0.06);
+    }
+    .orbit-ring:nth-child(2) .orbit-dot {
+      background: var(--amber);
+      box-shadow: 0 0 10px var(--amber);
+      width: 6px;
+      height: 6px;
+    }
+    @keyframes spinSlow {
+      to { transform: rotate(360deg); }
+    }
+
+    @media (min-width: 1024px) {
+      .hero__content { grid-template-columns: 1fr 400px; }
+      .hero__visual { display: flex; }
+    }
+
+    /* ============================================
+       THREAT LANDSCAPE
+       ============================================ */
+    .threat {
+      padding: var(--section-pad) 0;
+      position: relative;
+    }
+    .threat__header {
+      max-width: 640px;
+      margin-bottom: 3.5rem;
+    }
+    .threat__header p {
+      color: var(--text-secondary);
+      font-size: 1.0625rem;
+      margin-top: 1.25rem;
+      line-height: 1.7;
+    }
+    .threat__grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+    }
+    .threat-card {
+      background: var(--navy-mid);
+      border: 1px solid rgba(0, 212, 255, 0.06);
+      border-radius: 12px;
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .threat-card:hover {
+      border-color: rgba(0, 212, 255, 0.15);
+      transform: translateY(-2px);
+    }
+    .threat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--cyan), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .threat-card:hover::before { opacity: 1; }
+    .threat-card__icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 10px;
+      background: var(--cyan-dim);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.25rem;
+      color: var(--cyan);
+    }
+    .threat-card__stat {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 2rem;
+      color: var(--amber);
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.02em;
+    }
+    .threat-card__title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.125rem;
+      margin-bottom: 0.6rem;
+      color: var(--text-primary);
+    }
+    .threat-card__desc {
+      color: var(--text-secondary);
+      font-size: 0.9375rem;
+      line-height: 1.65;
+    }
+
+    @media (min-width: 768px) {
+      .threat__grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    /* ============================================
+       CAPABILITIES
+       ============================================ */
+    .capabilities {
+      padding: var(--section-pad) 0;
+      position: relative;
+    }
+    .capabilities__header {
+      max-width: 640px;
+      margin-bottom: 4rem;
+    }
+    .capabilities__header p {
+      color: var(--text-secondary);
+      font-size: 1.0625rem;
+      margin-top: 1.25rem;
+      line-height: 1.7;
+    }
+    .cap-row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+      margin-bottom: 3rem;
+      align-items: start;
+    }
+    .cap-row:last-child { margin-bottom: 0; }
+    .cap-panel {
+      background: var(--navy-mid);
+      border: 1px solid rgba(0, 212, 255, 0.06);
+      border-radius: 16px;
+      padding: 2.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .cap-panel--detect {
+      border-left: 3px solid var(--cyan);
+    }
+    .cap-panel--respond {
+      border-left: 3px solid var(--amber);
+    }
+    .cap-panel__label {
+      font-family: var(--font-display);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+    .cap-panel--detect .cap-panel__label { color: var(--cyan); }
+    .cap-panel--respond .cap-panel__label { color: var(--amber); }
+    .cap-panel__title {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      line-height: 1.25;
+    }
+    .cap-panel__desc {
+      color: var(--text-secondary);
+      font-size: 1rem;
+      line-height: 1.7;
+      margin-bottom: 1.75rem;
+    }
+    .cap-features {
+      list-style: none;
+      display: grid;
+      gap: 0.75rem;
+    }
+    .cap-features li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      font-size: 0.9375rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+    .cap-features li::before {
+      content: '';
+      flex-shrink: 0;
+      width: 18px;
+      height: 18px;
+      margin-top: 2px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .cap-panel--detect .cap-features li::before {
+      background: var(--cyan-dim);
+      box-shadow: inset 0 0 0 1.5px var(--cyan);
+    }
+    .cap-panel--respond .cap-features li::before {
+      background: var(--amber-dim);
+      box-shadow: inset 0 0 0 1.5px var(--amber);
+    }
+
+    /* Terminal-style decoration */
+    .cap-terminal {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(0, 212, 255, 0.1);
+      border-radius: 8px;
+      padding: 1.25rem;
+      margin-top: 1.5rem;
+      font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+      font-size: 0.8125rem;
+      line-height: 1.8;
+      color: var(--text-muted);
+      overflow-x: auto;
+    }
+    .cap-terminal .prompt { color: var(--cyan); }
+    .cap-terminal .status { color: #4ADE80; }
+    .cap-terminal .alert { color: var(--amber); }
+    .cap-terminal .dim { opacity: 0.5; }
+
+    @media (min-width: 1024px) {
+      .cap-row { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    /* ============================================
+       PROCESS
+       ============================================ */
+    .process {
+      padding: var(--section-pad) 0;
+      position: relative;
+    }
+    .process__header {
+      max-width: 640px;
+      margin-bottom: 4rem;
+    }
+    .process__header p {
+      color: var(--text-secondary);
+      font-size: 1.0625rem;
+      margin-top: 1.25rem;
+      line-height: 1.7;
+    }
+    .process__steps {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      position: relative;
+    }
+    /* Connecting line */
+    .process__steps::before {
+      content: '';
+      display: none;
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, var(--cyan), var(--slate-light), var(--amber));
+      opacity: 0.2;
+    }
+    .step {
+      background: var(--navy-mid);
+      border: 1px solid rgba(0, 212, 255, 0.06);
+      border-radius: 16px;
+      padding: 2rem;
+      text-align: center;
+      position: relative;
+    }
+    .step__number {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 3rem;
+      color: var(--cyan);
+      opacity: 0.15;
+      line-height: 1;
+      margin-bottom: 0.75rem;
+    }
+    .step__title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.25rem;
+      margin-bottom: 0.75rem;
+    }
+    .step__desc {
+      color: var(--text-secondary);
+      font-size: 0.9375rem;
+      line-height: 1.65;
+    }
+    .step__time {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-top: 1rem;
+      font-family: var(--font-display);
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--cyan);
+      background: var(--cyan-dim);
+      padding: 0.3rem 0.75rem;
+      border-radius: 100px;
+    }
+
+    @media (min-width: 768px) {
+      .process__steps {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
+      }
+      .process__steps::before { display: block; }
+    }
+
+    /* ============================================
+       TRUST SIGNALS
+       ============================================ */
+    .trust {
+      padding: var(--section-pad) 0;
+      position: relative;
+    }
+    .trust__stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+      margin-bottom: 4rem;
+    }
+    .stat {
+      text-align: center;
+      padding: 1.5rem 1rem;
+    }
+    .stat__number {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: clamp(2rem, 4vw, 3rem);
+      color: var(--cyan);
+      letter-spacing: -0.02em;
+      line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+    .stat__label {
+      font-family: var(--font-display);
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+    .trust__logos {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem 3rem;
+      align-items: center;
+      padding: 2.5rem 0;
+      border-top: 1px solid rgba(0, 212, 255, 0.06);
+      border-bottom: 1px solid rgba(0, 212, 255, 0.06);
+    }
+    .trust__logo {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--text-muted);
+      opacity: 0.5;
+      letter-spacing: 0.05em;
+      transition: opacity 0.3s;
+    }
+    .trust__logo:hover { opacity: 0.8; }
+    .trust__certs {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-top: 2.5rem;
+    }
+    .cert {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-family: var(--font-display);
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      background: var(--navy-mid);
+      padding: 0.6rem 1rem;
+      border-radius: 8px;
+      border: 1px solid rgba(0, 212, 255, 0.06);
+    }
+    .cert svg { color: var(--cyan); flex-shrink: 0; }
+
+    @media (min-width: 768px) {
+      .trust__stats { grid-template-columns: repeat(4, 1fr); }
+    }
+
+    /* ============================================
+       CTA SECTION
+       ============================================ */
+    .cta-section {
+      padding: var(--section-pad) 0;
+      position: relative;
+    }
+    .cta-card {
+      background: linear-gradient(135deg, var(--navy-mid) 0%, rgba(0, 212, 255, 0.05) 100%);
+      border: 1px solid rgba(0, 212, 255, 0.1);
+      border-radius: 24px;
+      padding: clamp(2.5rem, 5vw, 4rem);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-card::before {
+      content: '';
+      position: absolute;
+      top: -100px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(0, 212, 255, 0.06), transparent 70%);
+      pointer-events: none;
+    }
+    .cta-card__title {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+      line-height: 1.2;
+      margin-bottom: 1rem;
+      position: relative;
+    }
+    .cta-card__desc {
+      color: var(--text-secondary);
+      font-size: 1.0625rem;
+      max-width: 520px;
+      margin: 0 auto 2rem;
+      line-height: 1.7;
+      position: relative;
+    }
+    .cta-card__actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+      position: relative;
+    }
+    .cta-card__note {
+      margin-top: 1.25rem;
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      position: relative;
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .footer {
+      padding: 3rem 0;
+      border-top: 1px solid rgba(0, 212, 255, 0.06);
+      position: relative;
+      z-index: 1;
+    }
+    .footer__inner {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      align-items: center;
+      text-align: center;
+    }
+    .footer__logo {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 1.1rem;
+      color: var(--text-primary);
+    }
+    .footer__links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      justify-content: center;
+    }
+    .footer__links a {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      transition: color 0.2s;
+    }
+    .footer__links a:hover { color: var(--cyan); }
+    .footer__copy {
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+    }
+
+    @media (min-width: 768px) {
+      .footer__inner {
+        flex-direction: row;
+        justify-content: space-between;
+        text-align: left;
+      }
+    }
+
+    /* ============================================
+       NOISE TEXTURE OVERLAY
+       ============================================ */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.025;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+      background-size: 256px 256px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ======================== NAVIGATION ======================== -->
+  <nav class="nav" role="navigation" aria-label="Main navigation">
+    <div class="container nav__inner">
+      <a href="#" class="nav__logo" aria-label="Sentinel Shield home">
+        <span class="nav__logo-icon">
+          <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M16 2L4 8v8c0 7.73 5.12 14.96 12 17 6.88-2.04 12-9.27 12-17V8L16 2z" stroke="currentColor" stroke-width="1.5" fill="none" opacity="0.3"/>
+            <path d="M16 6L8 10v6c0 5.55 3.42 10.74 8 12.2 4.58-1.46 8-6.65 8-12.2v-6L16 6z" stroke="#00D4FF" stroke-width="1.5" fill="rgba(0,212,255,0.05)"/>
+            <path d="M13 16l2 2 4-4" stroke="#00D4FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        Sentinel Shield
+      </a>
+      <ul class="nav__links">
+        <li><a href="#capabilities">Platform</a></li>
+        <li><a href="#process">How It Works</a></li>
+        <li><a href="#trust">Why Us</a></li>
+      </ul>
+      <a href="#contact" class="nav__cta">Request a Briefing</a>
+      <button class="nav__hamburger" aria-label="Open menu" onclick="toggleMobileNav()">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile nav overlay -->
+  <div class="mobile-nav" id="mobileNav">
+    <a href="#capabilities" onclick="toggleMobileNav()">Platform</a>
+    <a href="#process" onclick="toggleMobileNav()">How It Works</a>
+    <a href="#trust" onclick="toggleMobileNav()">Why Us</a>
+    <a href="#contact" onclick="toggleMobileNav()" class="btn-primary" style="margin-top: 1rem;">Request a Briefing</a>
+  </div>
+
+  <!-- ======================== HERO ======================== -->
+  <section class="hero">
+    <div class="hero__bg"></div>
+    <div class="container hero__content">
+      <div class="hero__text">
+        <div class="hero__badge reveal">
+          <span class="hero__badge-dot"></span>
+          Monitoring 14M+ Endpoints Live
+        </div>
+        <h1 class="hero__headline reveal reveal-delay-1">
+          The breach already happened.<br><em>Your response hasn't.</em>
+        </h1>
+        <p class="hero__sub reveal reveal-delay-2">
+          Most mid-market security teams find threats days too late. Sentinel Shield cuts detection to minutes and puts an incident response team on your side before damage spreads.
+        </p>
+        <div class="hero__actions reveal reveal-delay-3">
+          <a href="#contact" class="btn-primary">Request a Threat Briefing</a>
+          <a href="#capabilities" class="btn-secondary">See the Platform</a>
+        </div>
+      </div>
+      <div class="hero__visual">
+        <div class="shield-container reveal reveal-delay-2">
+          <div class="orbit-ring"><div class="orbit-dot"></div></div>
+          <div class="orbit-ring"><div class="orbit-dot"></div></div>
+          <div class="scan-line"></div>
+          <svg class="shield-svg" viewBox="0 0 200 230" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Outer shield -->
+            <path d="M100 10L20 50v60c0 50 34 96 80 110 46-14 80-60 80-110V50L100 10z" stroke="rgba(0,212,255,0.15)" stroke-width="1" fill="none"/>
+            <!-- Inner shield -->
+            <path d="M100 30L35 62v48c0 42 28 80 65 92 37-12 65-50 65-92V62L100 30z" stroke="rgba(0,212,255,0.4)" stroke-width="1.5" fill="rgba(0,212,255,0.03)"/>
+            <!-- Core shield -->
+            <path d="M100 50L50 74v36c0 34 22 64 50 74 28-10 50-40 50-74V74L100 50z" stroke="#00D4FF" stroke-width="2" fill="rgba(0,212,255,0.06)"/>
+            <!-- Checkmark -->
+            <path d="M80 115l14 14 26-28" stroke="#00D4FF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            <!-- Center pulse -->
+            <circle cx="100" cy="110" r="45" stroke="rgba(0,212,255,0.1)" stroke-width="1" fill="none">
+              <animate attributeName="r" values="45;55;45" dur="3s" repeatCount="indefinite"/>
+              <animate attributeName="opacity" values="0.3;0;0.3" dur="3s" repeatCount="indefinite"/>
+            </circle>
+            <!-- Grid lines inside shield -->
+            <line x1="60" y1="90" x2="140" y2="90" stroke="rgba(0,212,255,0.06)" stroke-width="0.5"/>
+            <line x1="60" y1="110" x2="140" y2="110" stroke="rgba(0,212,255,0.06)" stroke-width="0.5"/>
+            <line x1="60" y1="130" x2="140" y2="130" stroke="rgba(0,212,255,0.06)" stroke-width="0.5"/>
+            <line x1="80" y1="70" x2="80" y2="150" stroke="rgba(0,212,255,0.06)" stroke-width="0.5"/>
+            <line x1="100" y1="60" x2="100" y2="160" stroke="rgba(0,212,255,0.06)" stroke-width="0.5"/>
+            <line x1="120" y1="70" x2="120" y2="150" stroke="rgba(0,212,255,0.06)" stroke-width="0.5"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================== THREAT LANDSCAPE ======================== -->
+  <section class="threat" id="threat">
+    <div class="container">
+      <div class="threat__header reveal">
+        <span class="section-label">The Reality</span>
+        <h2 class="section-title section-title--lg">Mid-market is the new bullseye</h2>
+        <p>Enterprise budgets buy enterprise protection. Small businesses fly under the radar. Companies in the middle get the worst of both worlds: high-value targets with underfunded defenses.</p>
+      </div>
+      <div class="threat__grid">
+        <div class="threat-card reveal reveal-delay-1">
+          <div class="threat-card__icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          </div>
+          <div class="threat-card__stat">197 days</div>
+          <div class="threat-card__title">Average time to detect a breach</div>
+          <div class="threat-card__desc">That's six months of an attacker moving freely through your network. By the time you know, they've already won.</div>
+        </div>
+        <div class="threat-card reveal reveal-delay-2">
+          <div class="threat-card__icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="9" y1="12" x2="15" y2="12"/></svg>
+          </div>
+          <div class="threat-card__stat">68%</div>
+          <div class="threat-card__title">Of mid-market breaches lack IR plans</div>
+          <div class="threat-card__desc">No playbook. No dedicated team. When an alert fires, it's all-hands panic instead of practiced containment.</div>
+        </div>
+        <div class="threat-card reveal reveal-delay-3">
+          <div class="threat-card__icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          </div>
+          <div class="threat-card__stat">$4.5M</div>
+          <div class="threat-card__title">Average cost of a mid-market breach</div>
+          <div class="threat-card__desc">Not just ransom payments. Lost revenue, legal fees, regulatory fines, and the customer trust you spent years building.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================== CAPABILITIES ======================== -->
+  <section class="capabilities" id="capabilities">
+    <div class="container">
+      <div class="capabilities__header reveal">
+        <span class="section-label">The Platform</span>
+        <h2 class="section-title section-title--lg">Two problems. One platform.<br>No gaps between them.</h2>
+        <p>Most vendors sell detection OR response. You're left stitching tools together with duct tape and prayers. We built both into a single system — so the handoff between "found it" and "fixed it" takes seconds, not days.</p>
+      </div>
+      <div class="cap-row">
+        <div class="cap-panel cap-panel--detect reveal">
+          <div class="cap-panel__label">Threat Detection</div>
+          <div class="cap-panel__title">Know what's happening. Right now.</div>
+          <div class="cap-panel__desc">Behavioral analysis across your endpoints, network, cloud, and identity layers. Not just signature matching — we catch the threats that don't match any known pattern.</div>
+          <ul class="cap-features">
+            <li>Continuous endpoint monitoring with 11-second telemetry cycles</li>
+            <li>ML-driven anomaly detection that learns your environment's baseline</li>
+            <li>Cross-signal correlation: an endpoint event + an identity anomaly + a network spike = one unified alert, not three separate tickets</li>
+            <li>Zero-day coverage via behavioral heuristics — no signature required</li>
+          </ul>
+          <div class="cap-terminal">
+            <span class="dim">[14:23:07]</span> <span class="prompt">sentinel</span> <span class="dim">|</span> monitoring 3,847 endpoints<br>
+            <span class="dim">[14:23:08]</span> <span class="alert">ALERT</span> <span class="dim">|</span> anomalous lateral movement detected — DC-PROD-04<br>
+            <span class="dim">[14:23:08]</span> <span class="prompt">sentinel</span> <span class="dim">|</span> correlating with identity events...<br>
+            <span class="dim">[14:23:09]</span> <span class="status">MATCH</span> <span class="dim">|</span> compromised service account SA-DEPLOY-7 — escalating to IR
+          </div>
+        </div>
+        <div class="cap-panel cap-panel--respond reveal reveal-delay-1">
+          <div class="cap-panel__label">Incident Response</div>
+          <div class="cap-panel__title">Contain fast. Recover faster.</div>
+          <div class="cap-panel__desc">When an alert escalates, our response team is already working. Automated containment fires in seconds. Human analysts validate and guide recovery — your team gets a partner, not a ticket number.</div>
+          <ul class="cap-features">
+            <li>Automated containment: isolate hosts, revoke credentials, block IPs — within 90 seconds of escalation</li>
+            <li>Dedicated IR analysts assigned to your environment (not a shared queue)</li>
+            <li>Forensic investigation with full attack chain reconstruction</li>
+            <li>Executive-ready incident reports within 4 hours — not "we'll get back to you next week"</li>
+          </ul>
+          <div class="cap-terminal">
+            <span class="dim">[14:23:09]</span> <span class="alert">IR-AUTO</span> <span class="dim">|</span> isolating DC-PROD-04 from network<br>
+            <span class="dim">[14:23:10]</span> <span class="alert">IR-AUTO</span> <span class="dim">|</span> revoking SA-DEPLOY-7 credentials cluster-wide<br>
+            <span class="dim">[14:23:11]</span> <span class="status">IR-HUMAN</span> <span class="dim">|</span> analyst M. Chen assigned — reviewing attack chain<br>
+            <span class="dim">[14:23:12]</span> <span class="prompt">sentinel</span> <span class="dim">|</span> blast radius contained. 0 lateral hosts affected.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================== PROCESS ======================== -->
+  <section class="process" id="process">
+    <div class="container">
+      <div class="process__header reveal">
+        <span class="section-label">How It Works</span>
+        <h2 class="section-title section-title--lg">From contract to coverage<br>in three weeks. Not three quarters.</h2>
+        <p>No 18-month integrations. No rip-and-replace. Sentinel Shield deploys alongside your existing stack and starts generating signal on day one.</p>
+      </div>
+      <div class="process__steps">
+        <div class="step reveal reveal-delay-1">
+          <div class="step__number">01</div>
+          <h3 class="step__title">Deploy Sensors</h3>
+          <p class="step__desc">Lightweight agents on endpoints. API connectors to your cloud and identity providers. No network redesign. No firewall changes.</p>
+          <span class="step__time">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            Week 1
+          </span>
+        </div>
+        <div class="step reveal reveal-delay-2">
+          <div class="step__number">02</div>
+          <h3 class="step__title">Learn Your Baseline</h3>
+          <p class="step__desc">Our ML models spend two weeks learning what "normal" looks like in your environment. No generic rulesets — your detections are tuned to your reality.</p>
+          <span class="step__time">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            Weeks 2–3
+          </span>
+        </div>
+        <div class="step reveal reveal-delay-3">
+          <div class="step__number">03</div>
+          <h3 class="step__title">Go Live</h3>
+          <p class="step__desc">Full detection and response active. Your dedicated analyst team is briefed on your environment. Threats get caught. You get sleep.</p>
+          <span class="step__time">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            Week 3
+          </span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================== TRUST SIGNALS ======================== -->
+  <section class="trust" id="trust">
+    <div class="container">
+      <div class="trust__stats reveal">
+        <div class="stat">
+          <div class="stat__number">4 min</div>
+          <div class="stat__label">Median detection time</div>
+        </div>
+        <div class="stat">
+          <div class="stat__number">90 sec</div>
+          <div class="stat__label">Automated containment</div>
+        </div>
+        <div class="stat">
+          <div class="stat__number">340+</div>
+          <div class="stat__label">Companies protected</div>
+        </div>
+        <div class="stat">
+          <div class="stat__number">99.97%</div>
+          <div class="stat__label">Uptime SLA</div>
+        </div>
+      </div>
+      <div class="trust__logos reveal reveal-delay-1">
+        <span class="trust__logo">MERIDIAN HEALTH</span>
+        <span class="trust__logo">IRONCLAD LOGISTICS</span>
+        <span class="trust__logo">PEAK FINANCIAL</span>
+        <span class="trust__logo">VERTEX MANUFACTURING</span>
+        <span class="trust__logo">ATLAS ENERGY</span>
+        <span class="trust__logo">NOVA BIOTECH</span>
+      </div>
+      <div class="trust__certs reveal reveal-delay-2">
+        <div class="cert">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 12 15 16 10"/></svg>
+          SOC 2 Type II
+        </div>
+        <div class="cert">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 12 15 16 10"/></svg>
+          ISO 27001
+        </div>
+        <div class="cert">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 12 15 16 10"/></svg>
+          HIPAA Compliant
+        </div>
+        <div class="cert">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 12 15 16 10"/></svg>
+          FedRAMP In Progress
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================== CTA SECTION ======================== -->
+  <section class="cta-section" id="contact">
+    <div class="container">
+      <div class="cta-card reveal">
+        <h2 class="cta-card__title">See what's already in your network</h2>
+        <p class="cta-card__desc">Our threat briefing isn't a sales pitch. It's a free assessment: we show you what we find in your environment, you decide if you want us to keep watching.</p>
+        <div class="cta-card__actions">
+          <a href="#" class="btn-primary">Request a Threat Briefing</a>
+          <a href="#" class="btn-secondary">Talk to an Analyst</a>
+        </div>
+        <p class="cta-card__note">No commitment. No 47-question form. A 30-minute call with a real analyst.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================== FOOTER ======================== -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__logo">Sentinel Shield</div>
+      <div class="footer__links">
+        <a href="#">Platform</a>
+        <a href="#">Documentation</a>
+        <a href="#">Security</a>
+        <a href="#">Careers</a>
+        <a href="#">Contact</a>
+      </div>
+      <div class="footer__copy">&copy; 2026 Sentinel Shield, Inc.</div>
+    </div>
+  </footer>
+
+  <!-- ======================== SCRIPTS ======================== -->
+  <script>
+    // Mobile nav toggle
+    function toggleMobileNav() {
+      document.getElementById('mobileNav').classList.toggle('open');
+    }
+
+    // Scroll reveal with IntersectionObserver
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Nav background on scroll
+    const nav = document.querySelector('.nav');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        nav.style.background = 'rgba(10, 22, 40, 0.95)';
+      } else {
+        nav.style.background = 'rgba(10, 22, 40, 0.85)';
+      }
+    }, { passive: true });
+  </script>
+</body>
+</html>

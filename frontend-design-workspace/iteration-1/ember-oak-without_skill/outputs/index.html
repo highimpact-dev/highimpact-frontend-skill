@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ember & Oak | Artisan Coffee Roasters - Portland, OR</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --color-bg: #faf8f5;
+      --color-dark: #1a1a1a;
+      --color-brown: #6b4226;
+      --color-brown-light: #8b5e3c;
+      --color-cream: #f5f0e8;
+      --color-accent: #c8553d;
+      --color-text: #3a3a3a;
+      --color-text-light: #6a6a6a;
+      --font-heading: 'Playfair Display', Georgia, serif;
+      --font-body: 'Inter', -apple-system, sans-serif;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--font-body);
+      color: var(--color-text);
+      background-color: var(--color-bg);
+      line-height: 1.6;
+    }
+
+    /* Navigation */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: rgba(250, 248, 245, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-family: var(--font-heading);
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--color-dark);
+      text-decoration: none;
+      letter-spacing: 0.5px;
+    }
+
+    .logo span {
+      color: var(--color-accent);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--color-text);
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--color-accent);
+    }
+
+    /* Hero */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 6rem 2rem 4rem;
+      background: linear-gradient(135deg, #1a1a1a 0%, #2d1f14 50%, #3a2518 100%);
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 30% 50%, rgba(200, 85, 61, 0.15) 0%, transparent 60%),
+                  radial-gradient(ellipse at 70% 30%, rgba(107, 66, 38, 0.2) 0%, transparent 50%);
+    }
+
+    .hero-content {
+      position: relative;
+      max-width: 800px;
+    }
+
+    .hero-tagline {
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--color-accent);
+      margin-bottom: 1.5rem;
+    }
+
+    .hero h1 {
+      font-family: var(--font-heading);
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 700;
+      line-height: 1.15;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero p {
+      font-size: 1.15rem;
+      font-weight: 300;
+      color: rgba(255,255,255,0.8);
+      max-width: 560px;
+      margin: 0 auto 2.5rem;
+      line-height: 1.7;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 0.9rem 2.2rem;
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-decoration: none;
+      border-radius: 4px;
+      transition: all 0.3s;
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-primary {
+      background: var(--color-accent);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #b5452e;
+      transform: translateY(-1px);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: white;
+      border: 1.5px solid rgba(255,255,255,0.4);
+      margin-left: 1rem;
+    }
+
+    .btn-outline:hover {
+      border-color: white;
+      background: rgba(255,255,255,0.08);
+    }
+
+    /* Section base */
+    section {
+      padding: 6rem 2rem;
+    }
+
+    .section-header {
+      text-align: center;
+      max-width: 600px;
+      margin: 0 auto 4rem;
+    }
+
+    .section-header h2 {
+      font-family: var(--font-heading);
+      font-size: 2.2rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: var(--color-dark);
+    }
+
+    .section-header p {
+      color: var(--color-text-light);
+      font-size: 1.05rem;
+      line-height: 1.7;
+    }
+
+    /* Story / About */
+    .story {
+      background: var(--color-cream);
+    }
+
+    .story-grid {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .story-image {
+      width: 100%;
+      height: 450px;
+      background: linear-gradient(145deg, #3a2518, #5a3a28);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255,255,255,0.3);
+      font-size: 0.85rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .story-text h2 {
+      font-family: var(--font-heading);
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+      color: var(--color-dark);
+    }
+
+    .story-text p {
+      color: var(--color-text-light);
+      margin-bottom: 1rem;
+      line-height: 1.8;
+    }
+
+    .story-text p:last-of-type {
+      margin-bottom: 2rem;
+    }
+
+    /* Process */
+    .process {
+      background: white;
+    }
+
+    .process-steps {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 3rem;
+    }
+
+    .step {
+      text-align: center;
+      padding: 2rem 1.5rem;
+    }
+
+    .step-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: var(--color-cream);
+      color: var(--color-brown);
+      font-family: var(--font-heading);
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+    }
+
+    .step h3 {
+      font-family: var(--font-heading);
+      font-size: 1.3rem;
+      margin-bottom: 0.75rem;
+      color: var(--color-dark);
+    }
+
+    .step p {
+      color: var(--color-text-light);
+      font-size: 0.95rem;
+      line-height: 1.7;
+    }
+
+    /* Coffees */
+    .coffees {
+      background: var(--color-bg);
+    }
+
+    .coffee-grid {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+
+    .coffee-card {
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .coffee-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.08);
+    }
+
+    .coffee-image {
+      height: 240px;
+      background: linear-gradient(135deg, #4a3020, #6b4a30);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255,255,255,0.2);
+      font-size: 0.75rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .coffee-info {
+      padding: 1.5rem;
+    }
+
+    .coffee-origin {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--color-accent);
+      margin-bottom: 0.5rem;
+    }
+
+    .coffee-info h3 {
+      font-family: var(--font-heading);
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+      color: var(--color-dark);
+    }
+
+    .coffee-notes {
+      font-size: 0.9rem;
+      color: var(--color-text-light);
+      margin-bottom: 1rem;
+    }
+
+    .coffee-price {
+      font-weight: 600;
+      color: var(--color-brown);
+      font-size: 1.05rem;
+    }
+
+    /* Testimonials */
+    .testimonials {
+      background: var(--color-dark);
+      color: white;
+    }
+
+    .testimonials .section-header h2 {
+      color: white;
+    }
+
+    .testimonials .section-header p {
+      color: rgba(255,255,255,0.6);
+    }
+
+    .testimonial-grid {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+    }
+
+    .testimonial {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 8px;
+      padding: 2rem;
+    }
+
+    .testimonial blockquote {
+      font-size: 1rem;
+      line-height: 1.7;
+      color: rgba(255,255,255,0.8);
+      margin-bottom: 1.5rem;
+      font-style: italic;
+    }
+
+    .testimonial-author {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--color-accent);
+    }
+
+    /* Newsletter */
+    .newsletter {
+      background: var(--color-cream);
+      text-align: center;
+    }
+
+    .newsletter-form {
+      max-width: 480px;
+      margin: 0 auto;
+      display: flex;
+      gap: 0.75rem;
+    }
+
+    .newsletter-form input {
+      flex: 1;
+      padding: 0.9rem 1.2rem;
+      border: 1.5px solid rgba(0,0,0,0.12);
+      border-radius: 4px;
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      background: white;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .newsletter-form input:focus {
+      border-color: var(--color-brown);
+    }
+
+    .newsletter-form .btn {
+      white-space: nowrap;
+    }
+
+    /* Footer */
+    footer {
+      background: var(--color-dark);
+      color: rgba(255,255,255,0.5);
+      padding: 3rem 2rem;
+    }
+
+    .footer-content {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-logo {
+      font-family: var(--font-heading);
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: white;
+    }
+
+    .footer-logo span {
+      color: var(--color-accent);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 1.5rem;
+      list-style: none;
+    }
+
+    .footer-links a {
+      color: rgba(255,255,255,0.5);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover {
+      color: white;
+    }
+
+    .footer-copy {
+      font-size: 0.8rem;
+    }
+
+    /* Mobile responsive */
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+
+      .story-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+
+      .story-image {
+        height: 300px;
+      }
+
+      .process-steps {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+
+      .coffee-grid {
+        grid-template-columns: 1fr;
+        max-width: 400px;
+      }
+
+      .testimonial-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .newsletter-form {
+        flex-direction: column;
+      }
+
+      .btn-outline {
+        margin-left: 0;
+        margin-top: 0.75rem;
+      }
+
+      .footer-content {
+        flex-direction: column;
+        gap: 1.5rem;
+        text-align: center;
+      }
+
+      section {
+        padding: 4rem 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav>
+    <a href="#" class="logo">Ember <span>&</span> Oak</a>
+    <ul class="nav-links">
+      <li><a href="#story">Our Story</a></li>
+      <li><a href="#process">Process</a></li>
+      <li><a href="#coffees">Coffees</a></li>
+      <li><a href="#testimonials">Reviews</a></li>
+      <li><a href="#subscribe" class="btn btn-primary" style="padding: 0.5rem 1.2rem; font-size: 0.85rem;">Subscribe</a></li>
+    </ul>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-content">
+      <p class="hero-tagline">Small-Batch Roasters &middot; Portland, OR</p>
+      <h1>Coffee Worth Slowing Down For</h1>
+      <p>We source single-origin beans from the world's most celebrated growing regions and roast them in small batches to honor every note, every nuance, every story.</p>
+      <div>
+        <a href="#coffees" class="btn btn-primary">Shop Our Coffees</a>
+        <a href="#story" class="btn btn-outline">Our Story</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Story -->
+  <section class="story" id="story">
+    <div class="story-grid">
+      <div class="story-image">Roastery Photo</div>
+      <div class="story-text">
+        <h2>Rooted in Craft, Driven by Origin</h2>
+        <p>Ember & Oak was born in a converted garage in Southeast Portland, where two friends discovered that great coffee isn't made -- it's revealed. Every bean carries the fingerprint of its soil, its altitude, its climate. Our job is simply to listen.</p>
+        <p>We travel to origin, building direct relationships with farmers who share our obsession with quality. From the highlands of Ethiopia to the volcanic slopes of Guatemala, we seek out lots that tell a story in every cup.</p>
+        <p>Each batch is roasted by hand in our 15-kilo Probat, profiled to bring out the character that makes single-origin coffee extraordinary. No blending. No shortcuts. Just honest coffee.</p>
+        <a href="#process" class="btn btn-primary">See Our Process</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Process -->
+  <section class="process" id="process">
+    <div class="section-header">
+      <h2>From Seed to Cup</h2>
+      <p>Every bag of Ember & Oak coffee follows a deliberate path from farm to your morning ritual.</p>
+    </div>
+    <div class="process-steps">
+      <div class="step">
+        <div class="step-number">01</div>
+        <h3>Source</h3>
+        <p>We visit farms personally, cupping hundreds of lots each season to find beans with exceptional character and complexity.</p>
+      </div>
+      <div class="step">
+        <div class="step-number">02</div>
+        <h3>Roast</h3>
+        <p>Small batches on our Probat roaster, with each origin profiled individually to honor its unique flavor fingerprint.</p>
+      </div>
+      <div class="step">
+        <div class="step-number">03</div>
+        <h3>Deliver</h3>
+        <p>Roasted to order and shipped within 24 hours, so every bag arrives at peak freshness with full tasting notes.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Coffees -->
+  <section class="coffees" id="coffees">
+    <div class="section-header">
+      <h2>Current Offerings</h2>
+      <p>Our rotating selection of single-origin coffees, roasted this week in Portland.</p>
+    </div>
+    <div class="coffee-grid">
+      <div class="coffee-card">
+        <div class="coffee-image">Product Photo</div>
+        <div class="coffee-info">
+          <p class="coffee-origin">Ethiopia &middot; Yirgacheffe</p>
+          <h3>Bekele Washing Station</h3>
+          <p class="coffee-notes">Jasmine, bergamot, honey sweetness</p>
+          <p class="coffee-price">$22 / 12oz</p>
+        </div>
+      </div>
+      <div class="coffee-card">
+        <div class="coffee-image">Product Photo</div>
+        <div class="coffee-info">
+          <p class="coffee-origin">Guatemala &middot; Huehuetenango</p>
+          <h3>Finca El Injerto</h3>
+          <p class="coffee-notes">Dark chocolate, orange zest, caramel</p>
+          <p class="coffee-price">$20 / 12oz</p>
+        </div>
+      </div>
+      <div class="coffee-card">
+        <div class="coffee-image">Product Photo</div>
+        <div class="coffee-info">
+          <p class="coffee-origin">Colombia &middot; Nari&ntilde;o</p>
+          <h3>La Esperanza Microlot</h3>
+          <p class="coffee-notes">Stone fruit, brown sugar, silky body</p>
+          <p class="coffee-price">$21 / 12oz</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section class="testimonials" id="testimonials">
+    <div class="section-header">
+      <h2>What People Are Saying</h2>
+      <p>From home brewers to professional baristas, here's what our community thinks.</p>
+    </div>
+    <div class="testimonial-grid">
+      <div class="testimonial">
+        <blockquote>"I've subscribed to a dozen coffee services. Ember & Oak is the only one I've kept for more than six months. Every bag is a revelation."</blockquote>
+        <p class="testimonial-author">Sarah M. &mdash; Home Brewer, Seattle</p>
+      </div>
+      <div class="testimonial">
+        <blockquote>"The tasting notes aren't marketing fluff -- you can actually taste the jasmine in the Yirgacheffe. These roasts are dialed in perfectly."</blockquote>
+        <p class="testimonial-author">James K. &mdash; Barista, Portland</p>
+      </div>
+      <div class="testimonial">
+        <blockquote>"Finally, a roaster that lets the origin speak. No dark-roast hiding act. Just clean, transparent coffee with real character."</blockquote>
+        <p class="testimonial-author">Maria L. &mdash; Coffee Buyer, San Francisco</p>
+      </div>
+      <div class="testimonial">
+        <blockquote>"My V60 pour-over has never tasted better. The freshness difference when it's roasted to order is night and day."</blockquote>
+        <p class="testimonial-author">David R. &mdash; Home Enthusiast, Denver</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Newsletter -->
+  <section class="newsletter" id="subscribe">
+    <div class="section-header">
+      <h2>Stay in the Loop</h2>
+      <p>Get first access to new roasts, origin stories from the farms we visit, and the occasional brewing tip.</p>
+    </div>
+    <form class="newsletter-form" onsubmit="event.preventDefault(); alert('Thanks for subscribing!');">
+      <input type="email" placeholder="Your email address" required>
+      <button type="submit" class="btn btn-primary">Subscribe</button>
+    </form>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-content">
+      <div class="footer-logo">Ember <span>&</span> Oak</div>
+      <ul class="footer-links">
+        <li><a href="#story">Our Story</a></li>
+        <li><a href="#coffees">Shop</a></li>
+        <li><a href="#">Instagram</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+      <p class="footer-copy">&copy; 2026 Ember & Oak Coffee Roasters. Portland, OR.</p>
+    </div>
+  </footer>
+
+</body>
+</html>

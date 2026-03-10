@@ -1,0 +1,32 @@
+{
+  "eval_id": 0,
+  "eval_name": "ember-oak",
+  "prompt": "Build a landing page for an artisan coffee roaster called Ember & Oak.",
+  "assertions": [
+    {
+      "name": "non-default-fonts",
+      "description": "Uses fonts other than Inter, Roboto, Open Sans, Poppins, Montserrat, DM Sans, Lato, Nunito",
+      "type": "programmatic"
+    },
+    {
+      "name": "no-generic-copy",
+      "description": "No instances of 'Welcome to', 'Transform your', 'Seamless', 'Cutting-edge', 'Solutions for' in headlines",
+      "type": "programmatic"
+    },
+    {
+      "name": "has-atmosphere",
+      "description": "Uses gradients, textures, grain, shadows, or visual depth beyond flat solid colors",
+      "type": "programmatic"
+    },
+    {
+      "name": "specific-color-palette",
+      "description": "Uses a coherent brand-specific color palette (not just grey/blue defaults)",
+      "type": "subjective"
+    },
+    {
+      "name": "brand-specific-identity",
+      "description": "Design feels specific to an artisan coffee brand, not a generic business template",
+      "type": "subjective"
+    }
+  ]
+}
