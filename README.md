@@ -35,14 +35,22 @@ The result: distinctive output that looks like a human designer and copywriter m
 
 ## Before & After
 
+Same prompt: *"Build a landing page for a cybersecurity startup called Sentinel Shield"*
+
+### Without Plugin
+![Without plugin — Inter font, white background, blue buttons, generic SaaS layout](assets/before.png)
+Inter font, blue #2563eb, centered layout, "Detect Threats Before They Become Breaches." Could be any SaaS page ever made.
+
+### With Plugin
+![With plugin — Exo 2 font, surveillance grid, animated shield, cyan/amber accents](assets/after.png)
+Exo 2 + Ubuntu Sans, deep navy with surveillance grid, animated shield graphic, "The breach already happened. Your response hasn't."
+
 | | Without Plugin | With Plugin |
 |---|---|---|
-| **Fonts** | Inter + system sans | Ubuntu + Saira Condensed (mood-matched) |
-| **Personality** | Generic corporate | Specific to the project's audience |
-| **Atmosphere** | Flat rectangles | Gradients, textures, depth, motion |
-| **Score** | 43% on design assertions | **100%** on design assertions |
-
-*Based on 6 blind evaluations across law firms, SaaS products, conferences, fashion, kids apps, and cybersecurity.*
+| **Fonts** | Inter (the default) | Exo 2 + Ubuntu Sans (mood-matched via font selector) |
+| **Copy** | "Detect Threats Before They Become Breaches" | "The breach already happened. Your response hasn't." |
+| **Atmosphere** | White background, blue buttons, flat cards | Surveillance grid, animated shield, cyan/amber system |
+| **Identity** | Generic SaaS template | Looks like a cybersecurity company |
 
 ---
 
