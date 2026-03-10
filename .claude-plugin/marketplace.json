@@ -1,0 +1,22 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "highimpact-frontend-skill",
+  "description": "High-impact frontend design plugins — production-grade UI that avoids generic AI aesthetics",
+  "owner": {
+    "name": "highimpact-dev",
+    "email": "highimpact-dev@users.noreply.github.com"
+  },
+  "plugins": [
+    {
+      "name": "highimpact-frontend-design",
+      "description": "Create distinctive, production-grade frontend interfaces with high design quality. Mood-based font selection from 1,500+ Google Fonts, staged build pipeline, live browser testing, and design review — all orchestrated to avoid generic AI aesthetics.",
+      "version": "1.0.0",
+      "author": {
+        "name": "highimpact-dev"
+      },
+      "source": ".",
+      "category": "design",
+      "homepage": "https://highimpact-dev.github.io/highimpact-frontend-skill/"
+    }
+  ]
+}
