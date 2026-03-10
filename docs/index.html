@@ -366,6 +366,30 @@
       }
     }
 
+    .install-option {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2);
+      flex: 1;
+    }
+
+    .install-label {
+      font-family: var(--font-body);
+      font-size: var(--text-xs);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--amber);
+    }
+
+    .install-divider {
+      font-family: var(--font-body);
+      font-size: var(--text-sm);
+      color: var(--cream-faint);
+      display: flex;
+      align-items: center;
+      padding: 0 var(--space-2);
+    }
+
     .code-block {
       font-family: 'Courier New', 'Menlo', monospace;
       font-size: var(--text-sm);
@@ -1256,6 +1280,35 @@
       }
     }
 
+    .install-options-row {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-4);
+      width: 100%;
+      max-width: 800px;
+    }
+
+    @media (min-width: 640px) {
+      .install-options-row {
+        flex-direction: row;
+        gap: var(--space-5);
+      }
+    }
+
+    .install-options-row .install-option {
+      flex: 1;
+    }
+
+    .install-options-row .code-block {
+      text-align: left;
+      white-space: normal;
+      word-break: break-all;
+    }
+
+    .install-options-row .install-divider {
+      justify-content: center;
+    }
+
     .install-section .code-block {
       flex: 1;
       text-align: left;
@@ -1374,7 +1427,7 @@
   <!-- Navigation -->
   <nav class="nav" aria-label="Site navigation">
     <div class="nav-logo">high<span>impact</span></div>
-    <button class="nav-cta" onclick="copyInstallCommand(this)" aria-label="Copy install command">
+    <button class="nav-cta" onclick="copyCommand(this, '/install frontend-design')" aria-label="Copy install command">
       Copy install command
     </button>
   </nav>
@@ -1400,16 +1453,33 @@
         </p>
 
         <div class="install-block reveal reveal-delay-3">
-          <div class="code-block hero-code" role="code" aria-label="Install command">
-            <span class="text-faint">$</span> claude plugin add highimpact-dev/highimpact-frontend-skill
+          <div class="install-option">
+            <span class="install-label">Official Marketplace</span>
+            <div class="code-block hero-code" role="code" aria-label="Install from marketplace">
+              <span class="text-faint">/</span>install frontend-design
+            </div>
+            <button class="copy-btn" onclick="copyCommand(this, '/install frontend-design')" aria-label="Copy marketplace install command">
+              <svg class="copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
           </div>
-          <button class="copy-btn" onclick="copyInstallCommand(this)" aria-label="Copy install command to clipboard">
-            <svg class="copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-            </svg>
-            Copy install command
-          </button>
+          <span class="install-divider">or</span>
+          <div class="install-option">
+            <span class="install-label">Direct from repo</span>
+            <div class="code-block hero-code" role="code" aria-label="Install from repo">
+              <span class="text-faint">$</span> claude plugin add highimpact-dev/highimpact-frontend-skill
+            </div>
+            <button class="copy-btn" onclick="copyCommand(this, 'claude plugin add highimpact-dev/highimpact-frontend-skill')" aria-label="Copy repo install command">
+              <svg class="copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
         </div>
 
         <p class="hero-microcopy reveal reveal-delay-4">
@@ -1946,17 +2016,34 @@
       </p>
 
       <div class="install-cta-group">
-        <div class="install-code-row reveal reveal-delay-3">
-          <div class="code-block" role="code" aria-label="Install command">
-            <span class="text-faint">$</span> claude plugin add highimpact-dev/highimpact-frontend-skill
+        <div class="install-options-row reveal reveal-delay-3">
+          <div class="install-option">
+            <span class="install-label">Official Marketplace</span>
+            <div class="code-block" role="code" aria-label="Install from marketplace">
+              <span class="text-faint">/</span>install frontend-design
+            </div>
+            <button class="copy-btn" onclick="copyCommand(this, '/install frontend-design')" aria-label="Copy marketplace install command">
+              <svg class="copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
           </div>
-          <button class="copy-btn" onclick="copyInstallCommand(this)" aria-label="Copy install command to clipboard">
-            <svg class="copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2 2v1"></path>
-            </svg>
-            Copy install command
-          </button>
+          <span class="install-divider">or</span>
+          <div class="install-option">
+            <span class="install-label">Direct from repo</span>
+            <div class="code-block" role="code" aria-label="Install from repo">
+              <span class="text-faint">$</span> claude plugin add highimpact-dev/highimpact-frontend-skill
+            </div>
+            <button class="copy-btn" onclick="copyCommand(this, 'claude plugin add highimpact-dev/highimpact-frontend-skill')" aria-label="Copy repo install command">
+              <svg class="copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
         </div>
 
         <p class="install-supporting reveal reveal-delay-4">
@@ -2027,10 +2114,8 @@
     });
 
     // ── Copy to clipboard ───────────────────────────────────────
-    const INSTALL_COMMAND = 'claude plugin add highimpact-dev/highimpact-frontend-skill';
-
-    function copyInstallCommand(btn) {
-      navigator.clipboard.writeText(INSTALL_COMMAND).then(() => {
+    function copyCommand(btn, command) {
+      navigator.clipboard.writeText(command).then(() => {
         const originalHTML = btn.innerHTML;
         btn.classList.add('copied');
         btn.innerHTML = `
@@ -2046,9 +2131,8 @@
           btn.setAttribute('aria-label', 'Copy install command to clipboard');
         }, 2200);
       }).catch(() => {
-        // Fallback for environments without clipboard API
         const textArea = document.createElement('textarea');
-        textArea.value = INSTALL_COMMAND;
+        textArea.value = command;
         textArea.style.position = 'fixed';
         textArea.style.opacity = '0';
         document.body.appendChild(textArea);
@@ -2057,7 +2141,7 @@
         try {
           document.execCommand('copy');
           btn.textContent = 'Copied!';
-          setTimeout(() => { btn.textContent = 'Copy install command'; }, 2200);
+          setTimeout(() => { btn.textContent = 'Copy'; }, 2200);
         } catch (err) {
           console.warn('Copy failed:', err);
         }
