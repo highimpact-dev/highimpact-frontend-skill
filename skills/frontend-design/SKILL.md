@@ -538,26 +538,44 @@ prompt: |
   [specific sections, or "all" for a voice overhaul]
 ```
 
-**3. Show the result.**
-After implementing, show the user what changed:
-- For visual changes: re-screenshot and present the updated view
-- For copy changes: quote the new text in context
-- For small fixes: briefly confirm what was adjusted
+**3. Verify in the browser. Every time.**
 
-> *"Updated — hero headline is now 'Find your HVAC tech in 11 minutes' and the CTA says 'Get your free quote.' Here's how it looks:"*
+After every code change — no matter how small — render the page and take a screenshot. The user needs to SEE the change, not trust your description of it.
+
+**How to verify:**
+
+Use whatever browser tooling was detected in Phase 0, in this priority order:
+
+1. **Chrome DevTools MCP** (`mcp__claude-in-chrome__*`): Navigate to the page, take screenshots at the breakpoints that matter for this change. If the change affects layout, screenshot mobile (375px) AND desktop (1280px). If it's a color/copy tweak, one screenshot at the most relevant breakpoint is fine.
+
+2. **Playwright** (if available as a skill): Run a quick verification script — navigate, screenshot, check for console errors.
+
+3. **Neither available**: Serve the page (`python3 -m http.server` for HTML), tell the user to check it, and note that you couldn't visually verify.
+
+**What to check on each iteration:**
+- Did the change actually render? (fonts load, images show, no broken layout)
+- Did the change break anything adjacent? (CSS cascade, flex/grid reflow, z-index)
+- Does mobile still work? (if you touched layout or spacing)
+- Any console errors? (check with `read_console_messages` or Playwright logs)
+
+**Present the screenshot(s) to the user with a brief note:**
+> *"Updated the hero headline and CTA. Here's how it looks now:"*
+> [screenshot]
+> *"Mobile still holds — no overflow. Better?"*
 
 **4. Stay in the loop.**
-After showing the result, **ask for more feedback**:
-> *"Better? Anything else you want to tweak?"*
+After showing the verified result, **ask for more feedback**:
+> *"Anything else you want to tweak?"*
 
 Don't assume one round of feedback is the end. Don't say "ready to ship?" after every fix — let the user drive the pace.
 
-### When to re-run the full pipeline during refinement:
+### When to re-run the FULL pipeline (tester + reviewer subagents):
 
-- **Theme change** (light→dark, new color palette) → re-test + re-review
-- **Layout restructure** (new sections, reordered sections) → re-test + re-review
+- **Theme change** (light→dark, new color palette) → full re-test at all 3 breakpoints + re-review
+- **Layout restructure** (new sections, reordered sections) → full re-test + re-review
 - **Voice overhaul** (full copy rewrite) → re-review (check copy fidelity)
-- **Everything else** → show the result, skip the pipeline
+
+For everything else, the orchestrator handles verification inline using the browser tools. You don't need the tester subagent for a color change — but you DO need to screenshot it.
 
 ### Exiting the loop:
 
@@ -579,7 +597,11 @@ When they exit → proceed to Phase 8 (Pre-Ship Gate), then update project memor
 | "This is taking too many rounds" | Iteration IS the process. Three rounds of refinement is normal. Rushing to ship is how you deliver something the user doesn't love. |
 | "I'll skip the aesthetics.md reference for a quick revision" | The rules don't stop applying because it's round 2. The builder still needs the full ruleset. A revision without guidelines is how dark-theme creep and generic fonts sneak back in. |
 | "The user is probably done after this fix" | Don't assume. Ask. If they're done, they'll say so. If they're not, they'll appreciate that you're ready for more. |
-| "Re-testing is overkill for this change" | If you changed the layout, theme, or multiple sections — re-test. A 30-second screenshot catches the regression you just introduced. |
+| "Re-testing is overkill for this change" | You're not re-running the full pipeline. You're taking ONE screenshot. That takes 5 seconds. Do it. |
+| "I'll just describe what I changed" | The user can't evaluate a design change from a description. They need to see it. Screenshot or it didn't happen. |
+| "The browser tools aren't set up" | If Chrome DevTools or Playwright were available in Phase 0, they're available now. If neither is available, serve the page and tell the user to check it — but don't pretend a code diff is verification. |
+| "It's just a text change, nothing visual shifted" | Text changes ARE visual changes. A longer headline can break layout. A shorter CTA can look lost in a big button. Render it. |
+| "I'll verify after a few more changes" | No. Verify each change individually. Batching changes without verification means you won't know which one broke the layout when something goes wrong on the 4th edit. |
 
 ---
 
