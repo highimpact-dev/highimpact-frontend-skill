@@ -11,6 +11,7 @@ Every AI coding tool produces the same output: Inter font, grey cards, flat rect
 Ask any AI to "build me a landing page" and you'll get:
 - **Inter or Roboto** (every time)
 - Grey-on-white cards with rounded corners
+- "Welcome to [Product]. We help you achieve your goals." as the headline
 - No visual personality, no atmosphere, no design point of view
 - Output that screams "AI made this"
 
@@ -22,10 +23,13 @@ This plugin adds a structured design workflow that forces real design decisions 
 
 1. **A conceptual anchor** — not "modern and clean" but "editorial magazine layout with serif authority and muted earth tones"
 2. **Data-driven font selection** — 1,500+ Google Fonts scored across 20 mood dimensions, with popularity weighting so the agent trusts and uses what's recommended
-3. **A design plan** — fonts, colors, layout, atmosphere, responsive strategy — all decided and approved before building starts
-4. **Anti-rationalization enforcement** — every shortcut the model might take has a pre-written counter-argument
+3. **A dedicated copywriter** — writes every headline, CTA, and paragraph before the builder touches code. Banned patterns block the usual AI filler. The builder uses the copy verbatim.
+4. **A design plan** — fonts, colors, layout, atmosphere, responsive strategy — all decided and approved before building starts
+5. **A refinement loop** — iterate until you're happy, with every revision agent getting the full ruleset
+6. **Project memory** — learns your preferences per project so the next build starts smarter
+7. **Anti-rationalization enforcement** — every shortcut the model might take has a pre-written counter-argument
 
-The result: distinctive output that looks like a human designer made intentional choices.
+The result: distinctive output that looks like a human designer and copywriter made intentional choices.
 
 ---
 
@@ -75,21 +79,34 @@ The creative phase. Creates a **conceptual anchor** (a metaphor that drives all 
 
 You approve the plan before any code is written.
 
-### 3. Staged Build
+### 3. Copywriting
+A dedicated copywriter agent writes every headline, body paragraph, CTA, and piece of microcopy — before the builder sees any of it. No more "Welcome to [Product]. We help you achieve your goals."
+
+The copy is written to match the design plan's conceptual anchor and tone. A banned patterns list blocks the usual AI filler: "Transform your X," "Seamless," "Cutting-edge," "Solutions." The builder receives the copy as a build input and uses it verbatim.
+
+### 4. Staged Build
 A subagent builds in 4 verified stages:
 
 | Stage | What | Verified Against |
 |---|---|---|
-| Structure | Semantic HTML, real content, every section | Plan's page structure |
+| Structure | Semantic HTML, copywriter's content placed | Plan's page structure + Content Map |
 | Typography | Font imports, CSS variables, color palette | Plan's visual choices |
 | Layout | Grid/flex, responsive breakpoints, mobile-first | Plan's responsive strategy |
 | Atmosphere | Gradients, textures, animations, polish | Plan's conceptual anchor |
 
-### 4. Live Testing
+### 5. Live Testing
 Renders in a real browser (if Chrome DevTools or Playwright available). Screenshots at mobile (375px), tablet (768px), and desktop (1280px). Checks for overflow, font loading, console errors, and interaction behavior.
 
-### 5. Design Review & Ship
-A review agent compares the output against the plan. A quality gate runs final checks. You decide when it ships.
+### 6. Design Review & Ship
+A review agent compares the output against the plan — including copy fidelity checks to catch any generic replacements the builder might have slipped in. A quality gate runs final checks. You decide when it ships.
+
+### 7. Refinement Loop
+First delivery is rarely final. After seeing the output, you iterate: adjust the copy, tweak colors, restructure a section, change the tone. The skill stays in a feedback loop until you say "ship it."
+
+Every revision agent gets the full ruleset — the same design guidelines, copy rules, and anti-rationalization tables that drove the first build. Quality doesn't degrade on round 3 the way it does when you're just chatting with a bare model.
+
+### 8. Project Memory
+The skill creates a `.frontend-design-memory.md` in your project directory after the first build. It captures your preferences, revision patterns, approved directions, and brand notes — so the next build in that project starts from what it already learned about your taste, not from zero.
 
 ---
 
@@ -122,15 +139,17 @@ Inter · Roboto · Open Sans · Poppins · Montserrat · DM Sans · Lato · Nuni
 
 ```
 Plugin
-├── Orchestrator (SKILL.md)        ← Creative direction, user conversation
+├── Orchestrator (SKILL.md)          ← Creative direction, user conversation, refinement loop
 ├── Font Selector (select-fonts.mjs) ← Data-driven font recommendations
-├── Builder Agent (Sonnet)          ← 4-stage code generation
-├── Tester Agent (Sonnet)           ← Browser rendering + screenshots
-├── Reviewer Agent (Haiku)          ← Plan compliance check
-└── Gate Agent (Haiku)              ← Pre-ship quality verification
+├── Copywriter Agent (Sonnet)        ← Headlines, body, CTAs, microcopy
+├── Builder Agent (Sonnet)           ← 4-stage code generation
+├── Tester Agent (Sonnet)            ← Browser rendering + screenshots
+├── Reviewer Agent (Haiku)           ← Plan + copy fidelity check
+├── Gate Agent (Haiku)               ← Pre-ship quality verification
+└── Project Memory (.md)             ← Per-project learned preferences
 ```
 
-The orchestrator stays in your conversation context for creative decisions. Heavy work (building, testing, reviewing) runs in subagents on cost-efficient models with fresh context.
+The orchestrator stays in your conversation context for creative decisions and the refinement loop. Heavy work (copywriting, building, testing, reviewing) runs in subagents on cost-efficient models with fresh context.
 
 ---
 
@@ -144,6 +163,8 @@ The highest-leverage pattern in this skill. AI models are excellent at justifyin
 | "I'll simplify the responsive strategy" | Build what was planned. Mobile-first, every breakpoint. |
 | "This animation is too complex" | The signature moment is what makes it screenshot-worthy. |
 | "I'll skip the texture/grain/atmosphere" | That's what separates designed from generic. |
+| "Welcome to [Product]. We help you achieve your goals." | A copywriter wrote specific copy. Use it verbatim. |
+| "I'll tighten up the copy a bit" | You're a builder, not an editor. The Content Map is a build input. |
 | "The user just wants code fast" | A 15-line plan takes 30 seconds to read. A wrong-direction rebuild takes 10 minutes. |
 
 ---
