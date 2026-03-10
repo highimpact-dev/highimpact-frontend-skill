@@ -1,0 +1,12 @@
+{
+  "name": "highimpact-frontend-design",
+  "description": "Create distinctive, production-grade frontend interfaces. Mood-based font selection from 1,500+ Google Fonts, staged build pipeline, live browser testing, and design review — all orchestrated to avoid generic AI aesthetics.",
+  "version": "1.0.0",
+  "author": {
+    "name": "highimpact-dev"
+  },
+  "repository": "https://github.com/highimpact-dev/highimpact-frontend-skill",
+  "keywords": ["frontend", "design", "ui", "web", "fonts", "css", "html"],
+  "skills": "./skills",
+  "agents": "./agents"
+}

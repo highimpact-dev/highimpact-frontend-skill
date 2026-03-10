@@ -146,7 +146,7 @@ Example: `Hero (full-bleed photo + booking CTA) → Trust signals (years, neighb
 **4. Visual Choices** — Specific values:
 - **Fonts**: Run the font selector to get mood-matched recommendations, then choose from them:
   ```bash
-  python3 ~/.claude/skills/frontend-design/scripts/select-fonts.py \
+  node ${CLAUDE_PLUGIN_ROOT}/scripts/select-fonts.mjs \
     '{"Calm": 80, "Sincere": 70, "Business": 50}'
   ```
   Map the conceptual anchor to mood weights (0-100) using these dimensions:
@@ -209,8 +209,8 @@ prompt: |
 
   ## Reference Material
   Read these before building:
-  - ~/.claude/skills/frontend-design/aesthetics.md — typography, color, composition guidelines
-  - [component-libraries.md path if needed for library-specific patterns]
+  - @${CLAUDE_PLUGIN_ROOT}/skills/frontend-design/aesthetics.md — typography, color, composition guidelines
+  - @${CLAUDE_PLUGIN_ROOT}/skills/frontend-design/component-libraries.md (if library-specific patterns needed)
 
   ## Scope
   [Full page build / specific sections / revision — be explicit]
