@@ -57,14 +57,12 @@ Exo 2 + Ubuntu Sans, deep navy with surveillance grid, animated shield graphic, 
 
 ## Install
 
-**From the official Claude Code marketplace:**
 ```bash
-/plugin install frontend-design@claude-plugin-directory
-```
+# Step 1: Add the marketplace
+/plugin marketplace add highimpact-dev/highimpact-frontend-skill
 
-**Or from this repo directly:**
-```bash
-claude plugin add highimpact-dev/highimpact-frontend-skill
+# Step 2: Install the plugin
+/plugin install highimpact-frontend-design@highimpact-frontend-skill
 ```
 
 ## Usage

@@ -366,14 +366,13 @@
       }
     }
 
-    .install-option {
+    .install-step {
       display: flex;
       flex-direction: column;
       gap: var(--space-2);
-      flex: 1;
     }
 
-    .install-label {
+    .install-step-label {
       font-family: var(--font-body);
       font-size: var(--text-xs);
       text-transform: uppercase;
@@ -381,13 +380,10 @@
       color: var(--amber);
     }
 
-    .install-divider {
-      font-family: var(--font-body);
-      font-size: var(--text-sm);
-      color: var(--cream-faint);
+    .install-steps {
       display: flex;
-      align-items: center;
-      padding: 0 var(--space-2);
+      flex-direction: column;
+      gap: var(--space-4);
     }
 
     .code-block {
@@ -1280,35 +1276,6 @@
       }
     }
 
-    .install-options-row {
-      display: flex;
-      flex-direction: column;
-      gap: var(--space-4);
-      width: 100%;
-      max-width: 800px;
-    }
-
-    @media (min-width: 640px) {
-      .install-options-row {
-        flex-direction: row;
-        gap: var(--space-5);
-      }
-    }
-
-    .install-options-row .install-option {
-      flex: 1;
-    }
-
-    .install-options-row .code-block {
-      text-align: left;
-      white-space: normal;
-      word-break: break-all;
-    }
-
-    .install-options-row .install-divider {
-      justify-content: center;
-    }
-
     .install-section .code-block {
       flex: 1;
       text-align: left;
@@ -1427,7 +1394,7 @@
   <!-- Navigation -->
   <nav class="nav" aria-label="Site navigation">
     <div class="nav-logo">high<span>impact</span></div>
-    <button class="nav-cta" onclick="copyCommand(this, '/plugin install frontend-design@claude-plugin-directory')" aria-label="Copy install command">
+    <button class="nav-cta" onclick="copyCommand(this, '/plugin marketplace add highimpact-dev/highimpact-frontend-skill')" aria-label="Copy install command">
       Copy install command
     </button>
   </nav>
@@ -1452,13 +1419,13 @@
           Not a style problem. A process problem. This plugin forces real design decisions before the first line of code.
         </p>
 
-        <div class="install-block reveal reveal-delay-3">
-          <div class="install-option">
-            <span class="install-label">Official Marketplace</span>
-            <div class="code-block hero-code" role="code" aria-label="Install from marketplace">
-              <span class="text-faint">/</span>install frontend-design
+        <div class="install-steps reveal reveal-delay-3">
+          <div class="install-step">
+            <span class="install-step-label">Step 1 — Add the marketplace</span>
+            <div class="code-block hero-code" role="code" aria-label="Add marketplace command">
+              <span class="text-faint">/</span>plugin marketplace add highimpact-dev/highimpact-frontend-skill
             </div>
-            <button class="copy-btn" onclick="copyCommand(this, '/plugin install frontend-design@claude-plugin-directory')" aria-label="Copy marketplace install command">
+            <button class="copy-btn" onclick="copyCommand(this, '/plugin marketplace add highimpact-dev/highimpact-frontend-skill')" aria-label="Copy add marketplace command">
               <svg class="copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
                 <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2 2v1"></path>
@@ -1466,13 +1433,12 @@
               Copy
             </button>
           </div>
-          <span class="install-divider">or</span>
-          <div class="install-option">
-            <span class="install-label">Direct from repo</span>
-            <div class="code-block hero-code" role="code" aria-label="Install from repo">
-              <span class="text-faint">$</span> claude plugin add highimpact-dev/highimpact-frontend-skill
+          <div class="install-step">
+            <span class="install-step-label">Step 2 — Install the plugin</span>
+            <div class="code-block hero-code" role="code" aria-label="Install plugin command">
+              <span class="text-faint">/</span>plugin install highimpact-frontend-design@highimpact-frontend-skill
             </div>
-            <button class="copy-btn" onclick="copyCommand(this, 'claude plugin add highimpact-dev/highimpact-frontend-skill')" aria-label="Copy repo install command">
+            <button class="copy-btn" onclick="copyCommand(this, '/plugin install highimpact-frontend-design@highimpact-frontend-skill')" aria-label="Copy install plugin command">
               <svg class="copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
                 <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2 2v1"></path>
@@ -1483,7 +1449,7 @@
         </div>
 
         <p class="hero-microcopy reveal reveal-delay-4">
-          One command. The next page Claude builds will look like you hired a designer.
+          Two commands. The next page Claude builds will look like you hired a designer.
         </p>
 
       </div>
@@ -2009,20 +1975,20 @@
         <div class="section-label" style="justify-content: center;">Install</div>
       </div>
       <h2 id="install-headline" class="section-headline reveal reveal-delay-1">
-        One Command. The Next Page Looks Different.
+        Two Commands. The Next Page Looks Different.
       </h2>
       <p class="section-subheadline reveal reveal-delay-2">
         Not different in a "we updated the color scheme" way. Different in a "someone actually made decisions" way.
       </p>
 
       <div class="install-cta-group">
-        <div class="install-options-row reveal reveal-delay-3">
-          <div class="install-option">
-            <span class="install-label">Official Marketplace</span>
-            <div class="code-block" role="code" aria-label="Install from marketplace">
-              <span class="text-faint">/</span>install frontend-design
+        <div class="install-steps reveal reveal-delay-3" style="width: 100%; max-width: 800px;">
+          <div class="install-step">
+            <span class="install-step-label">Step 1 — Add the marketplace</span>
+            <div class="code-block" role="code" aria-label="Add marketplace command">
+              <span class="text-faint">/</span>plugin marketplace add highimpact-dev/highimpact-frontend-skill
             </div>
-            <button class="copy-btn" onclick="copyCommand(this, '/plugin install frontend-design@claude-plugin-directory')" aria-label="Copy marketplace install command">
+            <button class="copy-btn" onclick="copyCommand(this, '/plugin marketplace add highimpact-dev/highimpact-frontend-skill')" aria-label="Copy add marketplace command">
               <svg class="copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
                 <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2 2v1"></path>
@@ -2030,13 +1996,12 @@
               Copy
             </button>
           </div>
-          <span class="install-divider">or</span>
-          <div class="install-option">
-            <span class="install-label">Direct from repo</span>
-            <div class="code-block" role="code" aria-label="Install from repo">
-              <span class="text-faint">$</span> claude plugin add highimpact-dev/highimpact-frontend-skill
+          <div class="install-step">
+            <span class="install-step-label">Step 2 — Install the plugin</span>
+            <div class="code-block" role="code" aria-label="Install plugin command">
+              <span class="text-faint">/</span>plugin install highimpact-frontend-design@highimpact-frontend-skill
             </div>
-            <button class="copy-btn" onclick="copyCommand(this, 'claude plugin add highimpact-dev/highimpact-frontend-skill')" aria-label="Copy repo install command">
+            <button class="copy-btn" onclick="copyCommand(this, '/plugin install highimpact-frontend-design@highimpact-frontend-skill')" aria-label="Copy install plugin command">
               <svg class="copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
                 <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2 2v1"></path>
