@@ -116,6 +116,18 @@ Every revision agent gets the full ruleset — the same design guidelines, copy 
 ### 8. Project Memory
 The skill creates a `.frontend-design-memory.md` in your project directory after the first build. It captures your preferences, revision patterns, approved directions, and brand notes — so the next build in that project starts from what it already learned about your taste, not from zero.
 
+### 9. Skill Evolution
+
+The skill gets better across projects — not just within them.
+
+**Phase-scoped loading**: Instead of dumping 800 lines of instructions into context on every run, the skill loads only the current phase's rules. Discovery doesn't carry refinement instructions. The builder doesn't carry discovery rules. This keeps the orchestrator lean across multiple revision rounds.
+
+**Cross-project learnings**: After every shipped build, a Learning Extraction step checks whether revision patterns generalize. "Users keep asking for more whitespace" in 3 different projects becomes a global rule, not 3 separate project memories. Stored in `learnings.md` and read during every Design Plan phase.
+
+**Auto-generated anti-patterns**: When the same type of revision appears across 2+ projects, the skill auto-generates a new anti-rationalization entry — the same `"Excuse" → "Reality"` format used throughout the skill. The model learns from its own failures without manual rule-writing.
+
+Inspired by [MetaClaw](https://github.com/aiming-lab/MetaClaw)'s skill evolution pattern — where agents analyze failure trajectories and generate new skills automatically.
+
 ---
 
 ## Font Selector
@@ -147,17 +159,19 @@ Inter · Roboto · Open Sans · Poppins · Montserrat · DM Sans · Lato · Nuni
 
 ```
 Plugin
-├── Orchestrator (SKILL.md)          ← Creative direction, user conversation, refinement loop
+├── Orchestrator (SKILL.md)          ← Slim router — loads phase files on demand
+│   └── phases/                      ← 9 phase files, read just-in-time
 ├── Font Selector (select-fonts.mjs) ← Data-driven font recommendations
 ├── Copywriter Agent (Sonnet)        ← Headlines, body, CTAs, microcopy
 ├── Builder Agent (Sonnet)           ← 4-stage code generation
 ├── Tester Agent (Sonnet)            ← Browser rendering + screenshots
 ├── Reviewer Agent (Haiku)           ← Plan + copy fidelity check
 ├── Gate Agent (Haiku)               ← Pre-ship quality verification
-└── Project Memory (.md)             ← Per-project learned preferences
+├── Project Memory (.md)             ← Per-project learned preferences
+└── Cross-Project Learnings (.md)    ← Auto-evolving global patterns
 ```
 
-The orchestrator stays in your conversation context for creative decisions and the refinement loop. Heavy work (copywriting, building, testing, reviewing) runs in subagents on cost-efficient models with fresh context.
+The orchestrator stays in your conversation context for creative decisions and the refinement loop. Heavy work (copywriting, building, testing, reviewing) runs in subagents on cost-efficient models with fresh context. Phase instructions load only when needed — the orchestrator reads `phases/discovery.md` at the start, `phases/design-plan.md` after discovery, and so on.
 
 ---
 
