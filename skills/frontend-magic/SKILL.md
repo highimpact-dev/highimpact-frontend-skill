@@ -6,7 +6,7 @@ license: Complete terms in LICENSE.txt
 
 This skill guides creation of distinctive, production-grade frontend interfaces that avoid generic "AI slop" aesthetics.
 
-**Workflow**: Discovery → Design Plan → Style Guide → Copywriting → Staged Build → Live Test → Design Review → Ship (or Revise)
+**Workflow**: Discovery → **Design Plan (Plan Mode + Wireframes)** → Style Guide → Copywriting → Staged Build → Live Test → Design Review → **Refinement (Plan Mode for significant changes)** → Ship
 
 **Flags**:
 - `--setup` — First-time setup wizard. **Read `setup.md`** and walk through it.
@@ -21,13 +21,13 @@ This skill guides creation of distinctive, production-grade frontend interfaces 
 | Phase | File | When to Read |
 |-------|------|-------------|
 | 0+1: Tool Check + Discovery | `phases/discovery.md` | Start of every build |
-| 2: Design Plan | `phases/design-plan.md` | After Discovery |
+| 2: Design Plan (PLAN MODE) | `phases/design-plan.md` | After Discovery — enters Plan Mode, presents ASCII wireframes |
 | 2.5: Style Guide | `phases/style-guide.md` | After plan approval |
 | 3: Copywriting | `phases/copywriting.md` | Before build (if page has copy) |
 | 4: Staged Build | `phases/build.md` | After copy is ready |
 | 5: Live Testing | `phases/testing.md` | After build completes |
 | 6: Design Review | `phases/review.md` | After testing |
-| 7: Refinement | `phases/refinement.md` | After first delivery |
+| 7: Refinement (PLAN MODE for significant changes) | `phases/refinement.md` | After first delivery — re-read EVERY round |
 | 8: Ship + Memory + Learn | `phases/ship.md` | When user says "ship it" |
 
 **Also read at the indicated phase:**
@@ -48,9 +48,9 @@ This skill guides creation of distinctive, production-grade frontend interfaces 
 ### What stays in your context (interactive with user):
 - Phase 0: Tool Check — quick detection, a few lines
 - Phase 1: Discovery — Q&A with user, can't delegate a conversation
-- Phase 2: Design Plan — creative decisions, needs user approval
+- Phase 2: Design Plan — **runs in Plan Mode**. ASCII wireframes (desktop + mobile), visual direction, user iterates on layout before code exists. No code can be written until user approves.
 - Phase 2.5: Style Guide — template population, browser preview, quick iteration
-- Phase 7: Revisions — feedback loop, small fixes inline
+- Phase 7: Revisions — feedback loop. **Significant changes (layout, theme, scope, voice) re-enter Plan Mode** with updated wireframes. Quick tweaks stay inline.
 
 ### What runs in subagents (no user interaction needed):
 
